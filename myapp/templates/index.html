@@ -1,0 +1,47 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} Metahosting {% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Dariah Metahosting</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ url_for('index') }}">Create new instance</a></li>                
+            <li><a href="{{ url_for('all_instances') }}">My instances</a></li>
+            <li><a href="{{ url_for('all_types') }}">Instance types</a></li>
+          </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('help_page', subject='General')}}">Help</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+{% if types.iteritems %}
+    <h3>Create instance</h3>
+        <form class="form-inline" role="form" action="" method="post">
+            <div class="form-group">
+           <select  class="form-control" name="instance_type">
+        {% for type_name, type_description in types.iteritems() %}
+            <option value="{{ type_name }}">{{ type_name }} </option>
+        {% endfor %}
+        </select>
+            <input class="btn btn-primary" type="submit" value="create" name="create"/>
+            </div>
+
+        </form>
+{% else %}
+      <h3>No instance type registered!</h3>
+{% endif %}
+     </div>
+</div>
+{% endblock %}

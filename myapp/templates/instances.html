@@ -1,0 +1,36 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} Metahosting: Instances {% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Dariah Metahosting</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('index') }}">Create new instance</a></li>                
+            <li class="active"><a href="#">My instances</a></li>
+            <li><a href="{{ url_for('all_types') }}">Instance types</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+    
+{% if instances.iteritems %}
+     <h3>List of instances</h3>
+        {% for id,instance in instances.iteritems() %}
+          {% include 'instance.html' %}
+        {% endfor %}
+
+{% endif %}
+  </div>
+</div>
+{% endblock %}
