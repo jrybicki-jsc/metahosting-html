@@ -1,7 +1,9 @@
+from collections import OrderedDict
+from itertools import islice
 from myapp import app
 from flask import render_template, abort, request
 from facade import get_all_instances, get_types, get_instance, \
-    get_instances_of_type, create_instance, get_instances_for_page
+    get_instances_of_type, create_instance
 from babel import dates
 from myapp.paginator import Pagination
 
@@ -28,7 +30,7 @@ def create_form():
 def all_instances():
     page = int(request.args.get('page', '1'))
     count = len(get_all_instances())
-    instances = get_instances_for_page(page, PER_PAGE)
+    instances = paginate_collection(get_all_instances(), page, PER_PAGE)
     pagination = Pagination(page, PER_PAGE, count)
     return render_template('instances.html', instances=instances,
                            pagination=pagination)
@@ -74,3 +76,8 @@ def format_datetime(value):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+
+def paginate_collection(collection, page, per_page):
+    instances = OrderedDict(collection)
+    return islice(instances.items(), (page - 1) * per_page, page * per_page)

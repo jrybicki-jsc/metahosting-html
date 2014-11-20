@@ -20,8 +20,9 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li {% if active_page=='help' %} class="active"{% endif  %}><a
-                    href="{{ url_for('help_page', subject='General')}}">Help</a></li>
-          </ul>
+                    href="{{ url_for('help_page', subject='General')}}"><span class="glyphicon glyphicon-question-sign"></span>&nbsp;Help</a></li>
+
+            </ul>
         </div>
       </div>
     </div>
