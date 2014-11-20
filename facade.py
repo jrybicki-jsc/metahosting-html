@@ -1,3 +1,5 @@
+from collections import OrderedDict
+from itertools import islice
 import uuid
 
 
@@ -62,6 +64,9 @@ def get_all_instances():
                     u'ts': 1416398801.153139,
                     u'type': u'mysql'}}
 
+def get_instances_for_page(page, PER_PAGE):
+    instances = OrderedDict(get_all_instances())
+    return islice(instances.items(), (page-1)*PER_PAGE, page*PER_PAGE)
 
 def get_instances_of_type(instance_type_name):
     return {iid: desc for iid, desc in get_all_instances().iteritems() if

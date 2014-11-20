@@ -1,8 +1,11 @@
 from myapp import app
 from flask import render_template, abort, request
 from facade import get_all_instances, get_types, get_instance, \
-    get_instances_of_type, create_instance
+    get_instances_of_type, create_instance, get_instances_for_page
 from babel import dates
+from myapp.paginator import Pagination
+
+PER_PAGE = 5
 
 
 @app.route('/')
@@ -20,10 +23,15 @@ def create_form():
                            instance=instance)
 
 
+
 @app.route('/instances/')
 def all_instances():
-    instances = get_all_instances()
-    return render_template('instances.html', instances=instances)
+    page = int(request.args.get('page', '1'))
+    count = len(get_all_instances())
+    instances = get_instances_for_page(page, PER_PAGE)
+    pagination = Pagination(page, PER_PAGE, count)
+    return render_template('instances.html', instances=instances,
+                           pagination=pagination)
 
 
 @app.route('/instances/<instance_id>')
