@@ -1,0 +1,47 @@
+{% extends "bootstrap/base.html" %}
+{% block title %} Metahosting: Instance type {{ type_name }} {% endblock %}
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Dariah Metahosting</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('index') }}">Create new instance</a></li>
+            <li><a href="#">My instances</a></li>
+            <li class="active"><a href="{{ url_for('all_types') }}">Instance types</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+      <h3>Type description</h3>
+          <table class="table table-bordered table-condensed">
+            <tr>
+                <td width="80px">Name</td>
+                <td><a
+                        href="{{ url_for('one_type', name=type_name) }}">{{ type_name }}</a></td>
+            </tr>
+            <tr>
+                <td width="80px">Description</td>
+                <td>{{ type_description['description'] }} </td>
+            </tr>
+        </table>
+      <a href="{{ url_for('all_types') }}">All types</a>
+      <h3>Instance of this type</h3>
+      {% for id,instance in instances.iteritems() %}
+          {% include 'instance.html' %}
+      {% endfor %}
+
+      <a href="{{ url_for('all_instances') }}">All instances</a>
+  </div>
+</div>
+{% endblock %}
