@@ -7,14 +7,20 @@
    {% endif %}
 
     <tr><td>Type</td>
-       <td><a href="{{ url_for('one_type', name=instance['type']) }}">{{
-           instance['type'] }}</a>
+       <td><a href="{{ url_for('one_type', name=instance['type']) }}">{{ instance['type'] }}</a>
        </td>
    </tr>
-   
-   {% if instance['status'].lower().find('failed')!=-1 %}
-   <tr class="danger"><td>Status</td><td>{{ instance['status'] }}</td></tr>
-   {% else %}
-   <tr class="info"><td>Status</td><td>{{ instance['status'] }}</td></tr>
-   {% endif %}
+
+   <tr{% if instance['status'].lower().find('failed')!=-1 %} class="danger" {% else %} class="info" {% endif %}>
+    <td>Status</td>
+    <td>{{ instance['status'] }}</td>
+   </tr>
+   <tr>
+       <td>Actions</td>
+       <td>
+       <button type="button" class="btn btn-default btn-xs">
+           <span style="color:red"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></span> Remove
+       </button>
+       </td>
+   </tr>
 </table>

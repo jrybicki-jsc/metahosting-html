@@ -20,7 +20,7 @@
       <a href="{{ url_for('all_types') }}"><span
               class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;All
           types</a>
-      <h3>Instance of this type</h3>
+      <h3>Instances of this type</h3>
       {% for id,instance in instances.iteritems() %}
           {% include 'instance.html' %}
       {% endfor %}
