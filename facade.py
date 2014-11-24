@@ -61,12 +61,3 @@ def get_all_instances():
                     u'status': u'failed',
                     u'ts': 1416398801.153139,
                     u'type': u'mysql'}}
-
-
-def get_instances_of_type(instance_type_name):
-    return {iid: desc for iid, desc in get_all_instances().iteritems() if
-            desc['type'] == instance_type_name}
-
-
-def generate_id():
-    return uuid.uuid1().hex
