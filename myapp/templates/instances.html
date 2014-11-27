@@ -17,8 +17,7 @@
         {% if pagination.has_prev %}
            <li class="previous"><a href="{{ url_for('all_instances', page = pagination.page-1) }}">&larr; Newer instances</a></li>
            {% else %}
-           <li class="previous disabled"><a href="#"
-                                            onclick="return false;">&larr; Newer instances</a></li>
+           <li class="previous disabled"><a href="#" onclick="return false;">&larr; Newer instances</a></li>
         {% endif %}
 
         {% if pagination.has_next %}

@@ -23,9 +23,9 @@ class User(dict):
         return self.get('pass') == password
 
 
-users = {'1': {'name': 'jj', 'pass': 'pass'},
-         '2': {'name': 'admin', 'pass': 'admin'},
-         '3': {'name': 'ivan', 'pass': 'ivan'}
+users = {'1': {'name': 'jj', 'pass': 'pass', 'api_key': '661'},
+         '2': {'name': 'admin', 'pass': 'admin', 'api_key': '88121'},
+         '3': {'name': 'ivan', 'pass': 'ivan', 'api_key': '771'}
         }
 
 
@@ -37,7 +37,15 @@ def get_user_for_id(uid):
 
 
 def get_user_for_name(name):
+    return get_user_for_feature('name', name)
+
+
+def get_user_for_api_key(api_key):
+    return get_user_for_feature('api_key', api_key)
+
+
+def get_user_for_feature(feature_name, feature_value):
     for user_id, user in users.iteritems():
-        if user['name'] == name:
+        if feature_name in user and user[feature_name] == feature_value:
             return User(user_id, user)
     return None

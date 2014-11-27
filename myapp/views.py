@@ -1,7 +1,7 @@
 from myapp import app, login_manager
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
-from myapp.user import get_user_for_id, get_user_for_name
+from myapp.user import get_user_for_id, get_user_for_name, get_user_for_api_key
 from babel import dates
 from collections import OrderedDict
 from itertools import islice
@@ -79,16 +79,10 @@ def help_page(subject):
     return render_template('help.html', subject=subject)
 
 
-@login_manager.user_loader
-def user_loader(userid):
-    return get_user_for_id(userid)
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # if g.user is not None and g.user.is_authenticated():
-    # return redirect(url_for('index'))
     form = LoginForm()
+    print 'What am I doing here?'
     if form.validate_on_submit():
         user = get_user_for_name(form.username.data)
         if user and user.validate_password(form.password.data):
@@ -104,6 +98,22 @@ def logout():
     logout_user()
     flash('Logged out', 'info')
     return redirect(url_for('index'))
+
+
+@login_manager.user_loader
+def user_loader(userid):
+    return get_user_for_id(userid)
+
+
+@login_manager.request_loader
+def load_user_from_request(incoming_request):
+    api_key = incoming_request.headers.get('API-KEY')
+    if api_key:
+        user = get_user_for_api_key(api_key)
+        if user:
+            return user
+    return None
+
 
 
 @app.template_filter('datetime')
