@@ -1,0 +1,36 @@
+
+{% extends "layout.html" %}
+
+{% block title %} Metahosting: Login {% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+
+  <div class="well">
+        <form class="form-signin" method="post">
+            <h2 class="form-signin-heading">Please login</h2>
+            {{ form.hidden_tag() }}
+            <div class="control-group">
+                <label for="username" class="control-label">Username</label>
+                <div class="controls">
+                    {{ form.username(maxlength=20, class="span4", id="username", placeholder="username") }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="password" class="control-label">Password</label>
+                <div class="controls">
+                    {{ form.password(maxlength=20, class="span4", placeholder="password", id="password") }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                     <!--<input class="btn btn-primary" type="submit" value="Sign In">-->
+                    <button class="btn btn-sm btn-primary" type="submit">Sign in</button>
+                </div>
+            </div>
+      </form>
+      </div>
+      </div>
+</div>
+{% endblock %}
