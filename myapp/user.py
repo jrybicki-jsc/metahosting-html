@@ -26,7 +26,7 @@ class User(dict):
 users = {'1': {'name': 'jj', 'pass': 'pass'},
          '2': {'name': 'admin', 'pass': 'admin'},
          '3': {'name': 'ivan', 'pass': 'ivan'}
-}
+        }
 
 
 def get_user_for_id(uid):

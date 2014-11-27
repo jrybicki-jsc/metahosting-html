@@ -1,16 +1,15 @@
-from collections import OrderedDict
-from itertools import islice
-from flask import Markup
-from flask.ext.login import login_required, login_user, logout_user
-from werkzeug.utils import redirect
 from myapp import app, login_manager
-from flask import render_template, abort, request, url_for, flash
-from facade import get_all_instances, get_types, get_instance, \
-    get_instances_of_type, create_instance
-from babel import dates
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
 from myapp.user import get_user_for_id, get_user_for_name
+from babel import dates
+from collections import OrderedDict
+from itertools import islice
+from flask import render_template, abort, request, url_for, flash, \
+    Markup, redirect
+from flask.ext.login import login_required, login_user, logout_user
+from facade import get_all_instances, get_types, get_instance, \
+    get_instances_of_type, create_instance
 
 PER_PAGE = 5
 
@@ -27,8 +26,10 @@ def index():
 def create_form():
     instance_type = request.form['instance_type']
     instance = create_instance(instance_type)
-    message = Markup('Instance <a href="%s">%s</a> created' % (url_for('one_instance', instance_id=instance['id']),
-                                                               instance['id']))
+    message = Markup('Instance <a href="%s">%s</a> created' %
+                     (url_for('one_instance', instance_id=instance['id']),
+                      instance['id']))
+
     flash(message, 'info')
     return render_template('index.html', types=get_types())
 
