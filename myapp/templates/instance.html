@@ -1,9 +1,9 @@
 <table class="table table-bordered table-condensed">
-   <tr><td>Id</td>
+   <tr><td width="80px">Id</td>
        <td><a href="{{ url_for('one_instance', instance_id=id) }}">{{ id }}</a></td>
    </tr>
    {% if instance['ts'] %}
-   <tr><td  width="80px">Created</td><td>{{ instance['ts']|datetime }} </td></tr>
+   <tr><td>Created</td><td>{{ instance['ts']|datetime }} </td></tr>
    {% endif %}
 
     <tr><td>Type</td>

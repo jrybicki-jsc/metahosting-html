@@ -1,7 +1,8 @@
+from flask_login import current_user
 from myapp import app, login_manager
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
-from myapp.user import get_user_for_id, get_user_for_name, get_user_for_api_key
+from myapp.user import get_user_for_id, get_user_for_name
 from babel import dates
 from collections import OrderedDict
 from itertools import islice
@@ -25,7 +26,7 @@ def index():
 @login_required
 def create_form():
     instance_type = request.form['instance_type']
-    instance = create_instance(instance_type)
+    instance = create_instance(instance_type, current_user.get_id())
     message = Markup('Instance <a href="%s">%s</a> created' %
                      (url_for('one_instance', instance_id=instance['id']),
                       instance['id']))
@@ -38,8 +39,9 @@ def create_form():
 @login_required
 def all_instances():
     page = int(request.args.get('page', '1'))
-    count = len(get_all_instances())
-    instances = paginate_collection(get_all_instances(), page, PER_PAGE)
+    instances = get_all_instances(uid=current_user.get_id())
+    count = len(instances)
+    instances = paginate_collection(instances, page, PER_PAGE)
     pagination = Pagination(page, PER_PAGE, count)
     return render_template('instances.html', instances=instances,
                            pagination=pagination)
@@ -48,7 +50,7 @@ def all_instances():
 @app.route('/instances/<instance_id>')
 @login_required
 def one_instance(instance_id):
-    instance = get_instance(instance_id=instance_id)
+    instance = get_instance(instance_id=instance_id, uid=current_user.get_id())
     if instance is None:
         abort(404)
 
@@ -66,12 +68,13 @@ def all_types():
 @login_required
 def one_type(name):
     types = get_types()
-    if name in types:
-        instances = get_instances_of_type(instance_type_name=name)
-        return render_template('single_type.html', type_name=name,
-                               type_description=types[name],
-                               instances=instances)
-    abort(404)
+    if name not in types:
+        abort(404)
+
+    instances = get_instances_of_type(instance_type_name=name, uid=current_user.get_id())
+    return render_template('single_type.html', type_name=name,
+                           type_description=types[name],
+                           instances=instances)
 
 
 @app.route('/help/<subject>', defaults={'subject': 'General'})
@@ -82,7 +85,6 @@ def help_page(subject):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    print 'What am I doing here?'
     if form.validate_on_submit():
         user = get_user_for_name(form.username.data)
         if user and user.validate_password(form.password.data):
@@ -105,15 +107,14 @@ def user_loader(userid):
     return get_user_for_id(userid)
 
 
-@login_manager.request_loader
-def load_user_from_request(incoming_request):
-    api_key = incoming_request.headers.get('API-KEY')
-    if api_key:
-        user = get_user_for_api_key(api_key)
-        if user:
-            return user
-    return None
-
+# @login_manager.request_loader
+# def load_user_from_request(incoming_request):
+# api_key = incoming_request.headers.get('API-KEY')
+#     if api_key:
+#         user = get_user_for_api_key(api_key)
+#         if user:
+#             return user
+#     return None
 
 
 @app.template_filter('datetime')
