@@ -1,26 +1,33 @@
-# mapping: uid->instance_id (shall we use ints? or strings?
-ownership = {
-    '2': ['0df959386fee11e4a350f0def1d0c536', '666'],
-    '3': ['828d548e6fe411e495bff0def1d0c536']
-}
+_ownership = {}
 
 
-def instance_belong_to_user(instance_id, user_id):
-    if user_id not in ownership:
+def is_user_instance(instance_id, user_id):
+    global _ownership
+    if user_id not in _ownership:
         return False
-    return instance_id in ownership[user_id]
+    return instance_id in _ownership[user_id]
 
 
 def get_user_instances(user_id):
-    if user_id in ownership:
-        return ownership[user_id]
-    return []
+    if user_id in _ownership:
+        return _ownership[user_id].copy()
+    return set()
 
 
-def make_owner(uid, instance_id):
-    global ownership
-    if uid not in ownership:
-        ownership[uid] = []
+def make_owner(user_id, instance_id):
+    global _ownership
+    if user_id not in _ownership:
+        _ownership[user_id] = set()
 
-    ownership[uid].append(instance_id)
+    _ownership[user_id].add(instance_id)
 
+
+def revoke_ownership(user_id, instance_id):
+    global _ownership
+    if user_id not in _ownership:
+        return False
+    if instance_id not in _ownership[user_id]:
+        return False
+
+    _ownership[user_id].remove(instance_id)
+    return True
