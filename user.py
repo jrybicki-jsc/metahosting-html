@@ -22,11 +22,7 @@ class User(dict):
     def validate_password(self, password):
         return self.get('pass') == password
 
-
-users = {'1': {'name': 'jj', 'pass': 'pass', 'api_key': '661'},
-         '2': {'name': 'admin', 'pass': 'admin', 'api_key': '88121'},
-         '3': {'name': 'ivan', 'pass': 'ivan', 'api_key': '771'}
-        }
+users = {}
 
 
 def get_user_for_id(uid):
@@ -36,16 +32,44 @@ def get_user_for_id(uid):
         return None
 
 
+def get_all_users():
+    return [User(user_id, user) for user_id, user in users.iteritems()]
+
+
+def drop_all_users():
+    global users
+    users = {}
+
+
+def remove_user(uid):
+    global users
+    if uid in users:
+        users.pop(uid)
+        return True
+    return False
+
+
+def add_user(uid, name, password, api_key):
+    global users
+    if uid in users:
+        return False
+
+    tmp_dict = {'name': name, 'pass': password, 'api_key': api_key}
+    users[uid] = tmp_dict.copy()
+    return True
+
+
 def get_user_for_name(name):
-    return get_user_for_feature('name', name)
+    return _get_user_for_feature('name', name)
 
 
 def get_user_for_api_key(api_key):
-    return get_user_for_feature('api_key', api_key)
+    return _get_user_for_feature('api_key', api_key)
 
 
-def get_user_for_feature(feature_name, feature_value):
+def _get_user_for_feature(feature_name, feature_value):
     for user_id, user in users.iteritems():
         if feature_name in user and user[feature_name] == feature_value:
             return User(user_id, user)
     return None
+

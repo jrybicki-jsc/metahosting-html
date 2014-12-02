@@ -1,5 +1,5 @@
 import uuid
-from autho import instance_belong_to_user, get_user_instances, make_owner
+import autho
 from time import time
 
 instances = {u'0df959386fee11e4a350f0def1d0c536': {
@@ -42,7 +42,7 @@ def create_instance(instance_type, uid):
     instance['status'] = 'starting'
     instance['type'] = instance_type
     instance['ts'] = time()
-    make_owner(uid, instance['id'])
+    autho.make_owner(uid, instance['id'])
     global instances
     instances[instance['id']] = instance
     return instance
@@ -55,14 +55,14 @@ def get_instances_of_type(instance_type_name, uid):
 
 def get_instance(instance_id, uid):
     instance_dict = get_all_instances(uid)
-    if instance_id in instance_dict and instance_belong_to_user(instance_id, uid):
+    if instance_id in instance_dict and autho.instance_belong_to_user(instance_id, uid):
         return instance_dict[instance_id]
     return None
 
 
 def get_all_instances(uid):
     global instances
-    user_instances = get_user_instances(uid)
+    user_instances = autho.get_user_instances(uid)
     return {instance_id: instances[instance_id] for instance_id in user_instances}
 
 

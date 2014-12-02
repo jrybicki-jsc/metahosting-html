@@ -2,7 +2,7 @@ from flask_login import current_user
 from myapp import app, login_manager
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
-from myapp.user import get_user_for_id, get_user_for_name
+from user import get_user_for_id, get_user_for_name
 from babel import dates
 from collections import OrderedDict
 from itertools import islice
