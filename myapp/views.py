@@ -92,6 +92,8 @@ def login():
             login_user(user)
             flash('Logged in successfully.', 'info')
             return redirect(request.args.get('next') or url_for('index'))
+        else:
+            flash('Unable to validate password', 'warning')
     return render_template('login.html', form=form)
 
 

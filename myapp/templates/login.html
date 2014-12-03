@@ -13,12 +13,18 @@
             <h2 class="form-signin-heading">Please login</h2>
             {{ form.hidden_tag() }}
             <div class="control-group">
+                {% for error in form.username.errors %}
+                {{ error }}
+                {% endfor %}
                 <label for="username" class="control-label">Username</label>
                 <div class="controls">
                     {{ form.username(maxlength=20, class="span4", id="username", placeholder="username") }}
                 </div>
             </div>
             <div class="control-group">
+                {% for error in form.password.errors %}
+                {{ error }}
+                {% endfor %}
                 <label for="password" class="control-label">Password</label>
                 <div class="controls">
                     {{ form.password(maxlength=20, class="span4", placeholder="password", id="password") }}
