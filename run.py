@@ -10,12 +10,16 @@ def add_some_users():
                '2': {'name': 'admin', 'pass': 'admin', 'api_key': '88121'},
                '3': {'name': 'ivan', 'pass': 'ivan', 'api_key': '771'}}
     for uid, v in my_list.iteritems():
-        add_user(uid=uid, name=v['name'], password=v['pass'], api_key=v['api_key'])
+        add_user(uid=uid,
+                 name=v['name'],
+                 password=v['pass'],
+                 api_key=v['api_key'])
 
 
 def add_some_ownership():
-    my_ownership = {'2': ['0df959386fee11e4a350f0def1d0c536', '666'],
-                    '3': ['828d548e6fe411e495bff0def1d0c536']
+    my_ownership = {
+        '2': ['0df959386fee11e4a350f0def1d0c536', '666'],
+        '3': ['828d548e6fe411e495bff0def1d0c536']
     }
     for uid, instance_list in my_ownership.iteritems():
         for instance_id in instance_list:
@@ -39,24 +43,25 @@ def add_some_types():
 
 
 def add_some_instances():
-    my_list = {u'0df959386fee11e4a350f0def1d0c536': {
-        u'id': u'0df959386fee11e4a350f0def1d0c536',
-        u'last_info': 1416402900.545865,
-        u'status': u'running',
-        u'ts': 1416402900.542269,
-        u'type': u'mysql'},
-               u'666': {
-                   u'id': u'666',
-                   u'last_info': 1416398801.156127,
-                   u'status': u'running',
-                   u'ts': 1416398801.153139,
-                   u'type': u'neo4j'},
-               u'828d548e6fe411e495bff0def1d0c536': {
-                   u'id': u'828d548e6fe411e495bff0def1d0c536',
-                   u'last_info': 1416398801.156127,
-                   u'status': u'failed',
-                   u'ts': 1416398801.153139,
-                   u'type': u'mysql'}}
+    my_list = {
+        u'0df959386fee11e4a350f0def1d0c536': {
+            u'id': u'0df959386fee11e4a350f0def1d0c536',
+            u'last_info': 1416402900.545865,
+            u'status': u'running',
+            u'ts': 1416402900.542269,
+            u'type': u'mysql'},
+        u'666': {
+            u'id': u'666',
+            u'last_info': 1416398801.156127,
+            u'status': u'running',
+            u'ts': 1416398801.153139,
+            u'type': u'neo4j'},
+        u'828d548e6fe411e495bff0def1d0c536': {
+            u'id': u'828d548e6fe411e495bff0def1d0c536',
+            u'last_info': 1416398801.156127,
+            u'status': u'failed',
+            u'ts': 1416398801.153139,
+            u'type': u'mysql'}}
 
     for k, v in my_list.iteritems():
         instances[k] = v

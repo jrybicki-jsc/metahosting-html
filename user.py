@@ -72,4 +72,3 @@ def _get_user_for_feature(feature_name, feature_value):
         if feature_name in user and user[feature_name] == feature_value:
             return User(user_id, user)
     return None
-
