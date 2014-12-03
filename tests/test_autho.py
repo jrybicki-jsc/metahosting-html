@@ -1,5 +1,6 @@
 import unittest
-from autho import make_owner, is_user_instance, revoke_ownership, get_user_instances
+from autho import make_owner, is_user_instance, revoke_ownership, \
+    get_user_instances
 
 
 class AuthoTest(unittest.TestCase):
@@ -31,11 +32,15 @@ class AuthoTest(unittest.TestCase):
         self.assertFalse(12221 in instances)
 
     def test_is_user_instance(self):
-        self.assertTrue(is_user_instance(user_id=self.uid, instance_id=self.instance_id1))
-        self.assertTrue(is_user_instance(user_id=self.uid, instance_id=self.instance_id2))
+        self.assertTrue(is_user_instance(user_id=self.uid,
+                                         instance_id=self.instance_id1))
+        self.assertTrue(is_user_instance(user_id=self.uid,
+                                         instance_id=self.instance_id2))
 
-        self.assertFalse(is_user_instance(user_id=self.uid, instance_id=77711))
-        self.assertFalse(is_user_instance(user_id=20011, instance_id=self.instance_id1))
+        self.assertFalse(is_user_instance(user_id=self.uid,
+                                          instance_id=77711))
+        self.assertFalse(is_user_instance(user_id=20011,
+                                          instance_id=self.instance_id1))
 
     def test_multiple_ownership(self):
         uid = '111'
@@ -57,23 +62,26 @@ class AuthoTest(unittest.TestCase):
         self.assertEqual(len(get_user_instances(uid)), 0)
 
     def test_revoke_ownership(self):
-        self.assertTrue(is_user_instance(instance_id=self.instance_id1, user_id=self.uid))
-        self.assertTrue(is_user_instance(instance_id=self.instance_id2, user_id=self.uid))
+        self.assertTrue(is_user_instance(instance_id=self.instance_id1,
+                                         user_id=self.uid))
+        self.assertTrue(is_user_instance(instance_id=self.instance_id2,
+                                         user_id=self.uid))
 
         result = revoke_ownership(user_id=self.uid, instance_id=122111)
         self.assertFalse(result)
 
-        result = revoke_ownership(user_id=2221, instance_id=self.instance_id1)
+        result = revoke_ownership(user_id=2221,
+                                  instance_id=self.instance_id1)
         self.assertFalse(result)
-        result = revoke_ownership(user_id=self.uid, instance_id=self.instance_id1)
+        result = revoke_ownership(user_id=self.uid,
+                                  instance_id=self.instance_id1)
         self.assertTrue(result)
-        self.assertTrue(is_user_instance(user_id=self.uid, instance_id=self.instance_id2))
-        self.assertFalse(is_user_instance(user_id=self.uid, instance_id=self.instance_id1))
+        self.assertTrue(is_user_instance(user_id=self.uid,
+                                         instance_id=self.instance_id2))
+        self.assertFalse(is_user_instance(user_id=self.uid,
+                                          instance_id=self.instance_id1))
         instances = get_user_instances(user_id=self.uid)
         self.assertFalse(self.instance_id1 in instances)
         self.assertTrue(self.instance_id2 in instances)
 
         make_owner(user_id=self.uid, instance_id=self.instance_id1)
-
-
-

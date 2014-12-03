@@ -1,5 +1,6 @@
 import unittest
-from user import User, get_user_for_id, drop_all_users, add_user, get_all_users, remove_user, get_user_for_name, \
+from user import User, get_user_for_id, drop_all_users, add_user, \
+    get_all_users, remove_user, get_user_for_name, \
     get_user_for_api_key
 
 
@@ -10,7 +11,9 @@ class UserTest(unittest.TestCase):
                    '2': {'name': 'admin', 'pass': 'admin', 'api_key': '88121'},
                    '3': {'name': 'ivan', 'pass': 'ivan', 'api_key': '771'}}
         for k, v in my_list.iteritems():
-            add_user(uid=k, name=v['name'], password=v['pass'], api_key=v['api_key'])
+            add_user(uid=k, name=v['name'],
+                     password=v['pass'],
+                     api_key=v['api_key'])
 
     def test_first(self):
         print 'Testing first'
@@ -88,13 +91,3 @@ class UserTest(unittest.TestCase):
         self.assertIsNone(r2)
         r2 = get_user_for_api_key('006612')
         self.assertIsNone(r2)
-
-
-
-
-
-
-
-
-
-

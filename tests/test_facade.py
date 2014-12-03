@@ -1,6 +1,6 @@
 import unittest
-from facade import get_types, add_type, remove_type, create_instance, get_instance, get_all_instances, delete_instance, \
-    get_instances_of_type
+from facade import get_types, add_type, remove_type, create_instance, \
+    get_instance, get_all_instances, delete_instance, get_instances_of_type
 
 
 class FacadeTest(unittest.TestCase):
@@ -15,9 +15,12 @@ class FacadeTest(unittest.TestCase):
         self.assertTrue(self.non_existing_type not in get_types())
 
         self.user_id = '90210'
-        self.instance1 = create_instance(instance_type=self.service_name1, uid=self.user_id)
-        self.instance2 = create_instance(instance_type=self.service_name1, uid=self.user_id)
-        self.instance3 = create_instance(instance_type=self.service_name2, uid=self.user_id)
+        self.instance1 = create_instance(instance_type=self.service_name1,
+                                         uid=self.user_id)
+        self.instance2 = create_instance(instance_type=self.service_name1,
+                                         uid=self.user_id)
+        self.instance3 = create_instance(instance_type=self.service_name2,
+                                         uid=self.user_id)
         self.assertEquals(3, len(get_all_instances(uid=self.user_id)))
 
         self.assertIsNotNone(self.instance1, 'Initialization failed')
@@ -85,11 +88,13 @@ class FacadeTest(unittest.TestCase):
 
     def test_create_instance(self):
         # not possible to start an instance of unknown type
-        result = create_instance(instance_type=self.non_existing_type, uid=self.user_id)
+        result = create_instance(instance_type=self.non_existing_type,
+                                 uid=self.user_id)
         self.assertIsNone(result)
 
         count = len(get_all_instances(uid=self.user_id))
-        result = create_instance(instance_type=self.service_name1, uid=self.user_id)
+        result = create_instance(instance_type=self.service_name1,
+                                 uid=self.user_id)
         self.assertIsNotNone(result)
         self.assertEquals(count+1, len(get_all_instances(uid=self.user_id)))
         # expect following fields:
@@ -101,7 +106,8 @@ class FacadeTest(unittest.TestCase):
         self.assertEquals(count, len(get_all_instances(uid=self.user_id)))
 
         ts1 = result['ts']
-        result = create_instance(instance_type=self.service_name1, uid=self.user_id)
+        result = create_instance(instance_type=self.service_name1,
+                                 uid=self.user_id)
         self.assertEquals(count+1, len(get_all_instances(uid=self.user_id)))
         self.assertIsNotNone(result)
         self.assertTrue('ts' in result)
@@ -112,14 +118,19 @@ class FacadeTest(unittest.TestCase):
 
     def test_get_instance(self):
         # non-existing instances
-        self.assertIsNone(get_instance(instance_id='33322211', uid=self.user_id))
-        self.assertIsNone(get_instance(instance_id='333222111', uid=self.user_id))
+        self.assertIsNone(get_instance(instance_id='33322211',
+                                       uid=self.user_id))
+        self.assertIsNone(get_instance(instance_id='333222111',
+                                       uid=self.user_id))
 
         # not authorized
-        self.assertIsNone(get_instance(instance_id=self.instance1['id'], uid=self.unauthorized_user1))
-        self.assertIsNone(get_instance(instance_id=self.instance1['id'], uid=self.unauthorized_user2))
+        self.assertIsNone(get_instance(instance_id=self.instance1['id'],
+                                       uid=self.unauthorized_user1))
+        self.assertIsNone(get_instance(instance_id=self.instance1['id'],
+                                       uid=self.unauthorized_user2))
 
-        result = get_instance(instance_id=self.instance1['id'], uid=self.user_id)
+        result = get_instance(instance_id=self.instance1['id'],
+                              uid=self.user_id)
         self.assertIsNotNone(result)
         self.assertTrue('id' in result)
         self.assertEqual(result['id'], self.instance1['id'])
@@ -140,39 +151,25 @@ class FacadeTest(unittest.TestCase):
 
     def test_get_instances_of_type(self):
         # non-existing type
-        result = get_instances_of_type(instance_type_name=self.non_existing_type, uid=self.user_id)
+        result = get_instances_of_type(self.non_existing_type, self.user_id)
         self.assertIsNotNone(result)
         self.assertEquals(0, len(result))
         # not-authorized
-        instances = get_instances_of_type(instance_type_name=self.service_name1, uid=self.unauthorized_user1)
+        instances = get_instances_of_type(self.service_name1,
+                                          self.unauthorized_user1)
         self.assertIsNotNone(result)
         self.assertEquals(0, len(result))
 
-        instances = get_instances_of_type(instance_type_name=self.service_name1, uid=self.user_id)
+        instances = get_instances_of_type(self.service_name1,
+                                          self.user_id)
         self.assertIsNotNone(instances)
 
         self.assertEquals(2, len(instances))
         self.assertTrue(self.instance1['id'] in instances)
         self.assertTrue(self.instance2['id'] in instances)
 
-        instances = get_instances_of_type(instance_type_name=self.service_name2, uid=self.user_id)
+        instances = get_instances_of_type(self.service_name2,
+                                          self.user_id)
         self.assertIsNotNone(instances)
         self.assertEquals(1, len(instances))
         self.assertTrue(self.instance3['id'] in instances)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
