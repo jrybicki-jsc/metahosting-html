@@ -1,6 +1,7 @@
 import unittest
 from myapp import app
-from facade import add_type
+from facade import add_type, create_instance, remove_type, get_types, \
+    delete_instance, get_all_instances
 from user import add_user
 
 
@@ -29,11 +30,32 @@ class ViewsTest(unittest.TestCase):
         self.non_existing_user = {'name': 'Odin',
                                   'password': 'Fooo',
                                   'api_key': 'foaaaa'}
+        self.instance_ids = []
+        for i in range(0, 3):
+            inst = create_instance(instance_type=self.types[0],
+                                   uid='2')
+            self.instance_ids.append(inst['id'])
 
+        for i in range(0, 2):
+            inst = create_instance(instance_type=self.types[1],
+                                   uid='2')
+            self.instance_ids.append(inst['id'])
+
+        self.assertEquals(len(self.instance_ids), 5, 'Setup failed')
+        self.instance_owner = self.user_list['2']
+        self.instance_owner['id'] = '2'
         self.app = app.test_client()
 
-    def test_first(self):
-        result = self.app.get('/')
+    def tearDown(self):
+        for i in self.types:
+            remove_type(i)
+        self.assertEquals(0, len(get_types()), 'TearDown failed')
+
+        for ids in self.instance_ids:
+            delete_instance(ids, self.instance_owner['id'])
+
+        self.assertEquals(0, len(get_all_instances(self.instance_owner['id'])),
+                          'TearDown failed')
 
     def test_login(self):
         for uid, user in self.user_list.iteritems():
@@ -63,8 +85,23 @@ class ViewsTest(unittest.TestCase):
         for t in self.types:
             self.assertTrue(t in rv.data)
 
-    def test_
+    def test_get_instances(self):
+        # not available until logged in
+        rv = self.app.get('/instances/')
+        self.assertEquals(rv.status_code, 302)
 
+        self.login(self.user_list['1']['name'], self.user_list['1']['password'])
+        rv = self.app.get('/instances/')
+        self.assertEquals(rv.status_code, 200)
+        self.assertTrue('No instances' in rv.data)
+        self.logout()
+        rv = self.app.get('/instances/')
+        self.assertEquals(rv.status_code, 302)
+
+        self.login(self.instance_owner['name'],
+                   self.instance_owner['password'])
+        rv = self.app.get('/instances/')
+        self.assertEquals(rv.status_code, 200)
 
     def login(self, username, password):
         return self.app.post('/login',

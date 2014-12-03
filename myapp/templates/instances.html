@@ -7,12 +7,15 @@
 {% block content %}
 <div class="container">
   <div class="jumbotron">
-    
 {% if instances %}
      <h3>List of instances</h3>
         {% for id, instance in instances %}
           {% include 'instance.html' %}
+        {% else %}
+           <p>No instances</p>
         {% endfor %}
+
+
      <ul class="pager">
         {% if pagination.has_prev %}
            <li class="previous"><a href="{{ url_for('all_instances', page = pagination.page-1) }}">&larr; Newer instances</a></li>
@@ -25,8 +28,7 @@
             {% else %}
             <li class="next disabled"><a href="#" onclick="return false;">Older instances &rarr;</a></li>
         {% endif %}
-        </ul>
-
+     </ul>
 
 {% endif %}
   </div>
