@@ -71,7 +71,8 @@ def one_type(name):
     if name not in types:
         abort(404)
 
-    instances = get_instances_of_type(instance_type_name=name, uid=current_user.get_id())
+    instances = get_instances_of_type(instance_type_name=name,
+                                      uid=current_user.get_id())
     return render_template('single_type.html', type_name=name,
                            type_description=types[name],
                            instances=instances)
