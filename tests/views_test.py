@@ -90,7 +90,8 @@ class ViewsTest(unittest.TestCase):
         rv = self.app.get('/instances/')
         self.assertEquals(rv.status_code, 302)
 
-        self.login(self.user_list['1']['name'], self.user_list['1']['password'])
+        self.login(self.user_list['1']['name'],
+                   self.user_list['1']['password'])
         rv = self.app.get('/instances/')
         self.assertEquals(rv.status_code, 200)
         self.assertTrue('No instances' in rv.data)
