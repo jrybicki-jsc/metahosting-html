@@ -3,21 +3,33 @@ import autho
 from time import time
 
 instances = dict()
-types = dict()
+_types = dict()
 
 
 def get_types():
-    return types.copy()
+    return _types.copy()
 
 
 def add_type(name, description):
-    global types
-    types[name] = description
+    global _types
+    _types[name] = description
+
+
+def remove_type(name):
+    global _types
+    if name not in _types:
+        return False
+    _types.pop(name)
+    return True
 
 
 def create_instance(instance_type, uid):
+    if instance_type not in get_types():
+        #exception?
+        return None
+
     instance = dict()
-    instance['id'] = generate_id()
+    instance['id'] = _generate_id()
     instance['status'] = 'starting'
     instance['type'] = instance_type
     instance['ts'] = time()
@@ -45,7 +57,7 @@ def get_all_instances(uid):
     return {instance_id: instances[instance_id] for instance_id in user_instances}
 
 
-def generate_id():
+def _generate_id():
     return uuid.uuid1().hex
 
 

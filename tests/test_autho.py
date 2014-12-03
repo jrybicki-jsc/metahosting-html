@@ -1,6 +1,5 @@
 import unittest
 from autho import make_owner, is_user_instance, revoke_ownership, get_user_instances
-import autho
 
 
 class AuthoTest(unittest.TestCase):
