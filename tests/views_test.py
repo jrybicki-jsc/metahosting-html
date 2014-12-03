@@ -2,6 +2,7 @@ import unittest
 from myapp import app
 from facade import add_type, create_instance, remove_type, get_types, \
     delete_instance, get_all_instances
+from myapp.views import logout
 from user import add_user
 
 
@@ -103,6 +104,73 @@ class ViewsTest(unittest.TestCase):
                    self.instance_owner['password'])
         rv = self.app.get('/instances/')
         self.assertEquals(rv.status_code, 200)
+        for iid in self.instance_ids:
+            self.assertTrue(iid in rv.data)
+        self.logout()
+
+    def test_single_instance(self):
+        # not available until logged in (even if not existing)
+        rv = self.app.get('/instances/311')
+        self.assertEquals(rv.status_code, 302)
+
+        rv = self.app.get('/instances/' + self.instance_ids[0])
+        self.assertEquals(rv.status_code, 302)
+
+        self.login(self.user_list['1']['name'],
+                   self.user_list['1']['password'])
+
+        # not existing
+        rv = self.app.get('/instances/311')
+        self.assertEquals(rv.status_code, 404)
+
+        # existing but not his
+        rv = self.app.get('/instances/' + self.instance_ids[0])
+        self.assertEquals(rv.status_code, 404)
+        self.logout()
+
+        self.login(self.instance_owner['name'],
+                   self.instance_owner['password'])
+        # able to access all its instances
+        for i in self.instance_ids:
+            rv = self.app.get('/instances/' + i)
+            self.assertEquals(rv.status_code, 200)
+
+        # not existing instance for logged in user
+        rv = self.app.get('/instances/311')
+        self.assertEquals(rv.status_code, 404)
+        self.logout()
+
+    def test_single_type(self):
+        # not available until logged in (even if not existing)
+        rv = self.app.get('/types/wordpress')
+        self.assertEquals(rv.status_code, 302)
+
+        for t in self.types:
+            rv = self.app.get('/types/' + t)
+            self.assertEquals(rv.status_code, 302)
+
+        self.login(self.user_list['1']['name'],
+                   self.user_list['1']['password'])
+
+        # logged user should access all types
+        for t in self.types:
+            rv = self.app.get('/types/' + t)
+            self.assertEquals(rv.status_code, 200)
+            # but must not view instances unless he has some
+            self.assertFalse('Instances of this type' in rv.data)
+
+        self.logout()
+
+        self.login(self.instance_owner['name'],
+                   self.instance_owner['password'])
+        # logged user should access all types
+        for t in self.types[:-1]:
+            rv = self.app.get('/types/' + t)
+            self.assertEquals(rv.status_code, 200)
+            # type view includes instances
+            self.assertTrue('Instances of this type' in rv.data)
+
+        self.logout()
 
     def login(self, username, password):
         return self.app.post('/login',

@@ -18,14 +18,14 @@
             </tr>
         </table>
       <a href="{{ url_for('all_types') }}"><span
-              class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;All
-          types</a>
+              class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;All types</a>
+      {% if instances|length >0 %}
       <h3>Instances of this type</h3>
       {% for id,instance in instances.iteritems() %}
           {% include 'instance.html' %}
       {% endfor %}
-
       <a href="{{ url_for('all_instances') }}"><span class="glyphicon glyphicon-circle-arrow-left"></span>&nbsp;All instances</a>
+      {% endif %}
   </div>
 </div>
 {% endblock %}
