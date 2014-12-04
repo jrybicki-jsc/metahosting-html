@@ -4,7 +4,7 @@ from autho import make_owner
 
 
 def add_some_users():
-    my_list = {'1': {'name': 'jj', 'pass': 'pass', 'api_key': '661'},
+    my_list = {'1': {'name': 'jj', 'pass': 'bar', 'api_key': '661'},
                '2': {'name': 'admin', 'pass': 'admin', 'api_key': '88121'},
                '3': {'name': 'ivan', 'pass': 'ivan', 'api_key': '771'}}
     for uid, v in my_list.iteritems():

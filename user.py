@@ -26,6 +26,7 @@ users = {}
 
 
 def get_user_for_id(uid):
+    global users
     if uid in users:
         return User(values=users[uid], user_id=uid)
     else:

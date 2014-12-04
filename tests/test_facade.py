@@ -1,6 +1,7 @@
 import unittest
 from facade import get_types, add_type, remove_type, create_instance, \
     get_instance, get_all_instances, delete_instance, get_instances_of_type
+import facade
 
 
 class FacadeTest(unittest.TestCase):
@@ -38,6 +39,7 @@ class FacadeTest(unittest.TestCase):
         delete_instance(self.instance1['id'], self.user_id)
         delete_instance(self.instance2['id'], self.user_id)
         delete_instance(self.instance3['id'], self.user_id)
+        facade.instances = {}
         self.assertEquals(0, len(get_all_instances(self.user_id)))
 
     def test_get_types(self):
@@ -173,3 +175,7 @@ class FacadeTest(unittest.TestCase):
         self.assertIsNotNone(instances)
         self.assertEquals(1, len(instances))
         self.assertTrue(self.instance3['id'] in instances)
+
+    def test_delete_instance(self):
+        result = delete_instance(self.instance1['id'], self.unauthorized_user1)
+        self.assertFalse(result)

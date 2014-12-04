@@ -31,3 +31,8 @@ def revoke_ownership(user_id, instance_id):
 
     _ownership[user_id].remove(instance_id)
     return True
+
+
+def drop_ownerships():
+    global _ownership
+    _ownership = {}

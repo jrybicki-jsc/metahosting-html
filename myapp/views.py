@@ -27,11 +27,14 @@ def index():
 def create_form():
     instance_type = request.form['instance_type']
     instance = create_instance(instance_type, current_user.get_id())
-    message = Markup('Instance <a href="%s">%s</a> created' %
-                     (url_for('one_instance', instance_id=instance['id']),
-                      instance['id']))
+    if instance is None:
+        flash('Unable to create instance', 'error')
+    else:
+        message = Markup('Instance <a href="%s">%s</a> created' %
+                         (url_for('one_instance', instance_id=instance['id']),
+                          instance['id']))
 
-    flash(message, 'info')
+        flash(message, 'info')
     return render_template('index.html', types=get_types())
 
 
@@ -78,8 +81,9 @@ def one_type(name):
                            instances=instances)
 
 
+@app.route('/help/')
 @app.route('/help/<subject>', defaults={'subject': 'General'})
-def help_page(subject):
+def help_page(subject='General'):
     return render_template('help.html', subject=subject)
 
 
@@ -113,7 +117,7 @@ def user_loader(userid):
 # @login_manager.request_loader
 # def load_user_from_request(incoming_request):
 # api_key = incoming_request.headers.get('API-KEY')
-#     if api_key:
+# if api_key:
 #         user = get_user_for_api_key(api_key)
 #         if user:
 #             return user
