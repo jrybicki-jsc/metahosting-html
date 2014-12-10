@@ -1,5 +1,5 @@
 import unittest
-from autho.autho import RemoteAuthorizer
+from remote.remote import RemoteAuthorizer
 from httmock import HTTMock, urlmatch
 import logging
 

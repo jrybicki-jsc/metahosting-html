@@ -1,6 +1,6 @@
 import unittest
 from facade import Facade
-from autho.autho import RemoteAuthorizer
+from remote.remote import RemoteAuthorizer
 from mock import Mock
 
 
