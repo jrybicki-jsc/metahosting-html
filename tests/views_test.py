@@ -1,6 +1,6 @@
 from time import time
 import unittest
-from autho import RemoteAuthorizer
+from autho.autho import RemoteAuthorizer
 from myapp import app, facade
 from user import add_user, get_all_users, drop_all_users
 from mock import Mock
@@ -193,12 +193,9 @@ class ViewsTest(unittest.TestCase):
         rv = self.app.post('/')
         self.assertEquals(302, rv.status_code)
         r = self.login(self.instance_owner)
-        print '%r' % get_all_users()
-        print '%r' % r.data
-
-        # # bad request:
-        # rv = self.app.post('/')
-        # self.assertEquals(400, rv.status_code)
+        # bad request:
+        rv = self.app.post('/')
+        self.assertEquals(400, rv.status_code)
 
         # non-existing type should fail:
         facade.create_instance = Mock(return_value=None)

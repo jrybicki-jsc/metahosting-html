@@ -1,7 +1,6 @@
 import unittest
-from autho import RemoteAuthorizer
+from autho.autho import RemoteAuthorizer
 from httmock import HTTMock, urlmatch
-import requests
 import logging
 
 logging.basicConfig(format='[%(filename)s] %(asctime)s %(message)s',

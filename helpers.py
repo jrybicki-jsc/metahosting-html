@@ -1,6 +1,6 @@
-from facade import add_type, instances
+
 from user import add_user
-from autho import make_owner
+from myapp import authorizer, facade
 
 
 def add_some_users():
@@ -21,7 +21,7 @@ def add_some_ownership():
     }
     for uid, instance_list in my_ownership.iteritems():
         for instance_id in instance_list:
-            make_owner(user_id=uid, instance_id=instance_id)
+            authorizer.make_owner(user_id=uid, instance_id=instance_id)
 
 
 def add_some_types():
@@ -37,7 +37,7 @@ def add_some_types():
                    u'ts': 1416487325.564435}
     }
     for name, desc in my_list.iteritems():
-        add_type(name=name, description=desc)
+        facade.add_type(name=name, description=desc)
 
 
 def add_some_instances():
@@ -62,7 +62,7 @@ def add_some_instances():
             u'type': u'mysql'}}
 
     for k, v in my_list.iteritems():
-        instances[k] = v
+        facade._instances[k] = v
 
 
 def set_up_test_app():

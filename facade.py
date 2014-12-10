@@ -32,7 +32,7 @@ class Facade(object):
         instance['ts'] = time()
         # return value ignored?
         self.authorization.make_owner(uid, instance['id'])
-        self._instances[instance['id']] = instance
+        self._instances[instance['id']] = instance.copy()
         return instance
 
     def delete_instance(self, instance_id, uid):
