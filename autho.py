@@ -1,38 +1,35 @@
-_ownership = {}
+import requests
 
 
-def is_user_instance(instance_id, user_id):
-    global _ownership
-    if user_id not in _ownership:
-        return False
-    return instance_id in _ownership[user_id]
+class RemoteAuthorizer(object):
+    def __init__(self, url, user, password):
+        self._url = url
+        # os.environ.get('autho-url', 'http://localhost:5000')
+        # os.environ.get('autho-user', 'service2')
+        # os.environ.get('autho-pass', 'simple')
+        self._auth = (user, password)
 
+    def is_user_instance(self, instance_id, user_id):
+        res = requests.get('%s/%s/resources/%s' % (self._url, user_id,
+                                                   instance_id))
+        return res.status_code == 200
 
-def get_user_instances(user_id):
-    if user_id in _ownership:
-        return _ownership[user_id].copy()
-    return set()
+    def get_user_instances(self, user_id):
+        res = requests.get('%s/%s/resources/' % (self._url, user_id))
+        if res.status_code == 200:
+            return res.json()['resources']
+        return set()
 
+    def make_owner(self, user_id, instance_id):
+        # make owner:
+        res = requests.put('%s/%s/resources/%s' % (self._url, user_id,
+                                                   instance_id),
+                           auth=self._auth)
+        return res.status_code == 201
 
-def make_owner(user_id, instance_id):
-    global _ownership
-    if user_id not in _ownership:
-        _ownership[user_id] = set()
-
-    _ownership[user_id].add(instance_id)
-
-
-def revoke_ownership(user_id, instance_id):
-    global _ownership
-    if user_id not in _ownership:
-        return False
-    if instance_id not in _ownership[user_id]:
-        return False
-
-    _ownership[user_id].remove(instance_id)
-    return True
-
-
-def drop_ownerships():
-    global _ownership
-    _ownership = {}
+    def revoke_ownership(self, user_id, instance_id):
+        # revoke ownership
+        res = requests.delete('%s/%s/resources/%s' % (self._url, user_id,
+                                                      instance_id),
+                              auth=self._auth)
+        return res.status_code == 204

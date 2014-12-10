@@ -1,5 +1,5 @@
 from flask_login import current_user
-from myapp import app, login_manager
+from myapp import app, login_manager, facade
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
 from user import get_user_for_id, get_user_for_name
@@ -9,8 +9,6 @@ from itertools import islice
 from flask import render_template, abort, request, url_for, flash, \
     Markup, redirect
 from flask.ext.login import login_required, login_user, logout_user
-from facade import get_all_instances, get_types, get_instance, \
-    get_instances_of_type, create_instance
 
 PER_PAGE = 5
 
@@ -18,7 +16,7 @@ PER_PAGE = 5
 @app.route('/')
 @login_required
 def index():
-    type_list = get_types()
+    type_list = facade.get_types()
     return render_template('index.html', types=type_list)
 
 
@@ -26,7 +24,7 @@ def index():
 @login_required
 def create_form():
     instance_type = request.form['instance_type']
-    instance = create_instance(instance_type, current_user.get_id())
+    instance = facade.create_instance(instance_type, current_user.get_id())
     if instance is None:
         flash('Unable to create instance', 'error')
     else:
@@ -35,14 +33,14 @@ def create_form():
                           instance['id']))
 
         flash(message, 'info')
-    return render_template('index.html', types=get_types())
+    return render_template('index.html', types=facade.get_types())
 
 
 @app.route('/instances/')
 @login_required
 def all_instances():
     page = int(request.args.get('page', '1'))
-    instances = get_all_instances(uid=current_user.get_id())
+    instances = facade.get_all_instances(uid=current_user.get_id())
     count = len(instances)
     instances = paginate_collection(instances, page, PER_PAGE)
     pagination = Pagination(page, PER_PAGE, count)
@@ -53,7 +51,8 @@ def all_instances():
 @app.route('/instances/<instance_id>')
 @login_required
 def one_instance(instance_id):
-    instance = get_instance(instance_id=instance_id, uid=current_user.get_id())
+    instance = facade.get_instance(instance_id=instance_id,
+                                   uid=current_user.get_id())
     if instance is None:
         abort(404)
 
@@ -63,19 +62,19 @@ def one_instance(instance_id):
 
 @app.route('/types/')
 def all_types():
-    type_list = get_types()
+    type_list = facade.get_types()
     return render_template('types.html', types=type_list)
 
 
 @app.route('/types/<name>')
 @login_required
 def one_type(name):
-    types = get_types()
+    types = facade.get_types()
     if name not in types:
         abort(404)
 
-    instances = get_instances_of_type(instance_type_name=name,
-                                      uid=current_user.get_id())
+    instances = facade.get_instances_of_type(instance_type_name=name,
+                                             uid=current_user.get_id())
     return render_template('single_type.html', type_name=name,
                            type_description=types[name],
                            instances=instances)
@@ -118,7 +117,7 @@ def user_loader(userid):
 # def load_user_from_request(incoming_request):
 # api_key = incoming_request.headers.get('API-KEY')
 # if api_key:
-#         user = get_user_for_api_key(api_key)
+# user = get_user_for_api_key(api_key)
 #         if user:
 #             return user
 #     return None
