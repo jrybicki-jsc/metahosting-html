@@ -1,7 +1,6 @@
 import unittest
 from myapp import app, facade, type_store, instance_store, authorizer
 from user import add_user, drop_all_users
-from mock import Mock
 
 
 class ViewsTest(unittest.TestCase):
