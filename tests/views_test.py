@@ -1,6 +1,6 @@
 from time import time
 import unittest
-from remote.remote import RemoteAuthorizer
+from autho import RemoteAuthorizer
 from myapp import app, facade
 from user import add_user, get_all_users, drop_all_users
 from mock import Mock
