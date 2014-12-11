@@ -1,6 +1,6 @@
 
 from user import add_user
-from myapp import authorizer, facade
+from myapp import authorizer, facade, instance_store
 
 
 def add_some_users():
@@ -62,7 +62,7 @@ def add_some_instances():
             u'type': u'mysql'}}
 
     for k, v in my_list.iteritems():
-        facade._instances[k] = v
+        instance_store.update(k, v)
 
 
 def set_up_test_app():
