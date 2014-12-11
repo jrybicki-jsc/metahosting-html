@@ -2,7 +2,7 @@ from time import time
 import unittest
 from autho import RemoteAuthorizer
 from myapp import app, facade
-from user import add_user, get_all_users, drop_all_users
+from user import add_user, drop_all_users
 from mock import Mock
 from facade import Facade
 
@@ -192,7 +192,7 @@ class ViewsTest(unittest.TestCase):
         # not available for not authenticated
         rv = self.app.post('/')
         self.assertEquals(302, rv.status_code)
-        r = self.login(self.instance_owner)
+        self.login(self.instance_owner)
         # bad request:
         rv = self.app.post('/')
         self.assertEquals(400, rv.status_code)

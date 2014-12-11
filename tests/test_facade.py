@@ -2,12 +2,17 @@ import unittest
 from facade import Facade
 from autho import RemoteAuthorizer
 from mock import Mock
+from stores.dict_store import Store
 
 
 class FacadeTest(unittest.TestCase):
     def setUp(self):
         self.author = RemoteAuthorizer('', '', '')
-        self.facade = Facade(authorization=self.author)
+        self.instance_store = Store()
+        self.type_store = Store()
+        self.facade = Facade(authorization=self.author,
+                             instance_store=self.instance_store,
+                             type_store=self.type_store)
         self.service_name2 = 'service1'
         self.service_name1 = 'eXistNeo'
         self.non_existing_type = 'mAtriX'
@@ -69,6 +74,7 @@ class FacadeTest(unittest.TestCase):
 
     def test_get_instance(self):
         # non-existing instances
+        self.author.is_user_instance = Mock(return_value=True)
         self.assertIsNone(self.facade.get_instance(instance_id='33322211',
                                                    uid=self.user_id))
         self.assertIsNone(self.facade.get_instance(instance_id='333222111',
