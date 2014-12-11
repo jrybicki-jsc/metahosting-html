@@ -15,8 +15,10 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 authorizer = get_authorizer()
+type_store = Store()
+instance_store = Store()
 facade = Facade(authorization=authorizer,
-                type_store=Store(),
-                instance_store=Store())
+                type_store=type_store,
+                instance_store=instance_store)
 
 import myapp.views

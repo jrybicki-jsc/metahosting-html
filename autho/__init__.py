@@ -4,7 +4,6 @@ from autho.remote import RemoteAuthorizer
 
 
 def get_authorizer():
-    # RemoteAuthorizer('http://localhost:6000', 'service2', 'simple')
     if 'AUTHO_PORT_5000_TCP_PORT' in os.environ \
             and 'AUTHO_PORT_5000_TCP_ADDR' in os.environ:
         url = 'http://%s:%s' % (os.environ.get('AUTHO_PORT_5000_TCP_PORT'),

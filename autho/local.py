@@ -25,3 +25,6 @@ class LocalAuthorizer(object):
                 or instance_id not in self._ownership[user_id]:
             return False
         self._ownership[user_id].remove(instance_id)
+
+    def drop_all(self):
+        self._ownership = dict()

@@ -1,23 +1,21 @@
 from time import time
 import unittest
-from autho import RemoteAuthorizer
-from myapp import app, facade
+from autho.local import LocalAuthorizer
+from myapp import app, facade, type_store, instance_store, authorizer
 from user import add_user, drop_all_users
 from mock import Mock
-from facade import Facade
 
 
 class ViewsTest(unittest.TestCase):
     def setUp(self):
+        self.tearDown()
+
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         self.types = ['mysql', 'eXist', 'mongo']
-        self.autho = RemoteAuthorizer('', '', '')
-        self.facade = Facade(self.autho)
-        facade = Facade(self.autho)
+
         for i in self.types:
             facade.add_type(i, {'desc': 'description'})
-            self.facade.add_type(i, {'desc': 'description'})
 
         self.li = facade.get_types()
 
@@ -40,25 +38,32 @@ class ViewsTest(unittest.TestCase):
                                   'password': 'Fooo',
                                   'api_key': 'foaaaa'}
         self.instances = []
-        self.autho.make_owner = Mock(return_value=True)
+
         for i in range(0, 3):
-            inst = self.facade.create_instance(instance_type=self.types[0],
-                                               uid='2')
+            inst = facade.create_instance(instance_type=self.types[0],
+                                          uid='2')
             self.instances.append(inst)
 
         for i in range(0, 2):
-            inst = self.facade.create_instance(instance_type=self.types[1],
-                                               uid='2')
+            inst = facade.create_instance(instance_type=self.types[1],
+                                          uid='2')
             self.instances.append(inst)
 
         self.instance_owner = self.user_list['2'].copy()
         self.instance_owner['id'] = '2'
 
         self.app = app.test_client()
-        facade.create_instance = Mock(return_value=True)
 
     def tearDown(self):
         drop_all_users()
+        authorizer.drop_all()
+        inst = instance_store.get_all()
+        for instance_id, value in inst.iteritems():
+            instance_store.remove(instance_id)
+
+        inst = type_store.get_all()
+        for type_name, value in inst.iteritems():
+            type_store.remove(type_name)
 
     def test_login(self):
         for uid, user in self.user_list.iteritems():
@@ -160,10 +165,12 @@ class ViewsTest(unittest.TestCase):
         self.login(self.user_list['1'])
 
         # logged user should access all types
+
         for t in self.types:
             rv = self.app.get('/types/' + t)
             self.assertEquals(rv.status_code, 200)
             # but must not view instances unless he has some
+            print '%r' % facade.get_instances_of_type(t, '1')
             self.assertFalse('Instances of this type' in rv.data)
 
         self.logout()
@@ -198,22 +205,11 @@ class ViewsTest(unittest.TestCase):
         self.assertEquals(400, rv.status_code)
 
         # non-existing type should fail:
-        facade.create_instance = Mock(return_value=None)
         rv = self.app.post('/',
                            data={'instance_type': 'mss'},
                            follow_redirects=True)
 
         self.assertTrue('Unable to create instance' in rv.data, rv.data)
-        facade.create_instance.assert_called_with('mss',
-                                                  self.instance_owner['id'])
-
-        # existing type:
-        instance = dict()
-        instance['id'] = '10100101'
-        instance['status'] = 'starting'
-        instance['type'] = self.types[0]
-        instance['ts'] = time()
-        facade.create_instance = Mock(return_value=instance)
         rv = self.app.post('/',
                            data={'instance_type': self.types[0]},
                            follow_redirects=True)
