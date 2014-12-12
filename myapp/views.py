@@ -1,4 +1,5 @@
 from flask_login import current_user
+from pytz import timezone
 from myapp import app, login_manager, facade
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
@@ -125,7 +126,9 @@ def user_loader(userid):
 
 @app.template_filter('datetime')
 def format_datetime(value):
-    return dates.format_datetime(value)
+    return dates.format_datetime(value,
+                                 locale='en_US',
+                                 tzinfo=timezone('Europe/Berlin'))
 
 
 @app.errorhandler(404)

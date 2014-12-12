@@ -7,6 +7,7 @@ from stores.dict_store import Store
 
 app = Flask(__name__)
 app.secret_key = '03aa1'
+app.config['BABEL_DEFAULT_TIMEZONE'] = 'UTC+1'
 app.config.from_envvar('META-HTTP', silent=True)
 
 Bootstrap(app)
