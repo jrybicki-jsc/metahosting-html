@@ -178,3 +178,10 @@ class FacadeTest(unittest.TestCase):
         r = self.facade.delete_instance(instance_id=self.instances[0]['id'],
                                         uid=self.user_id)
         self.assertFalse(r)
+
+    def test_outdated_autho(self):
+        #authorization service returns some non-existing ids:
+        self.author.get_user_instances = Mock(return_value={'1', '2'})
+        v = self.facade.get_all_instances(self.user_id)
+        self.assertIsNotNone(v)
+        self.assertEqual(len(v), 0)

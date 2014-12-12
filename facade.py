@@ -50,7 +50,7 @@ class Facade(object):
     def get_all_instances(self, uid):
         user_instances = self.authorization.get_user_instances(uid)
         return {instanceId: self._instances.get(instanceId) for instanceId in
-                user_instances}
+                user_instances if self._instances.get(instanceId)}
 
     @staticmethod
     def _generate_id():
