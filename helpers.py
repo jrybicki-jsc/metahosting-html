@@ -1,17 +1,4 @@
-
-from authen import add_user
 from myapp import authorizer, facade, instance_store
-
-
-def add_some_users():
-    my_list = {'1': {'name': 'jj', 'pass': 'bar', 'api_key': '661'},
-               '2': {'name': 'admin', 'pass': 'admin', 'api_key': '88121'},
-               '3': {'name': 'ivan', 'pass': 'ivan', 'api_key': '771'}}
-    for uid, v in my_list.iteritems():
-        add_user(uid=uid,
-                 name=v['name'],
-                 password=v['pass'],
-                 api_key=v['api_key'])
 
 
 def add_some_ownership():
@@ -66,7 +53,6 @@ def add_some_instances():
 
 
 def set_up_test_app():
-    add_some_users()
     add_some_ownership()
     add_some_types()
     add_some_instances()

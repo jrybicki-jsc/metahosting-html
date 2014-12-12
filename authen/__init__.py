@@ -1,6 +1,25 @@
 from authen.user import User
+import json
+import os
+
+USERS_FILE = 'myapp/data/users.json'
+
+
+def load_from_file(file_name=USERS_FILE):
+    if os.path.isfile(file_name):
+        with open(file_name) as f:
+            users = json.load(f)
+    else:
+        return None
+    return users
 
 _backend = dict()
+a = load_from_file()
+if a:
+    print 'Loading users database from file'
+    _backend = a
+else:
+    print 'File %s not found' % USERS_FILE
 
 
 def _get_user_for_feature(feature_name, feature_value):
