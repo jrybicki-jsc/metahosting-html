@@ -1,9 +1,9 @@
 from flask_login import current_user
 from pytz import timezone
+from authen import get_user_for_name, get_user_for_id
 from myapp import app, login_manager, facade
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
-from user import get_user_for_id, get_user_for_name
 from babel import dates
 from collections import OrderedDict
 from itertools import islice

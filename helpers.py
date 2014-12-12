@@ -1,5 +1,5 @@
 
-from user import add_user
+from authen import add_user
 from myapp import authorizer, facade, instance_store
 
 

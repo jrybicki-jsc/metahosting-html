@@ -2,11 +2,15 @@ import os
 from autho.local import LocalAuthorizer
 from autho.remote import RemoteAuthorizer
 
+HOST = 'AUTHO_PORT_5000_TCP_ADDR'
+PORT = 'AUTHO_PORT_5000_TCP_PORT'
+
 
 def get_authorizer():
-    if 'AUTHO_PORT_5000_TCP_PORT' in os.environ \
-            and 'AUTHO_PORT_5000_TCP_ADDR' in os.environ:
-        url = 'http://%s:%s' % (os.environ.get('AUTHO_PORT_5000_TCP_ADDR'),
-                                os.environ.get('AUTHO_PORT_5000_TCP_PORT'))
+    if PORT in os.environ and HOST in os.environ:
+        url = 'http://%s:%s' % (os.environ.get(HOST),
+                                os.environ.get(PORT))
         return RemoteAuthorizer(url=url, user='service2', password='simple')
+    print 'set environment variables:%s %s to use remote authorizer' % \
+          (HOST, PORT)
     return LocalAuthorizer()

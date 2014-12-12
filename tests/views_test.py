@@ -1,6 +1,6 @@
 import unittest
 from myapp import app, facade, type_store, instance_store, authorizer
-from user import add_user, drop_all_users
+from authen import add_user, drop_all_users
 
 
 class ViewsTest(unittest.TestCase):

@@ -1,7 +1,8 @@
+
 class LocalAuthorizer(object):
     def __init__(self):
         self._ownership = dict()
-        print 'This authorizer must not be used in production'
+        print('This authorizer must not be used in production')
 
     def is_user_instance(self, instance_id, user_id):
         return \

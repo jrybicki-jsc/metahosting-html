@@ -1,5 +1,5 @@
 import unittest
-from user import User, get_user_for_id, drop_all_users, add_user, \
+from authen import User, get_user_for_id, drop_all_users, add_user, \
     get_all_users, remove_user, get_user_for_name, \
     get_user_for_api_key
 
