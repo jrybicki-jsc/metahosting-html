@@ -16,7 +16,8 @@ def load_from_file(file_name=USERS_FILE):
 _backend = dict()
 a = load_from_file()
 if a:
-    print 'Loading users database from file'
+    print 'Loading users database from file %s (loaded: %s)' % (USERS_FILE,
+                                                                len(a))
     _backend = a
 else:
     print 'File %s not found' % USERS_FILE

@@ -8,6 +8,7 @@ ENV LC_CTYPE  en_US.utf-8
 RUN wget -q -O -  --no-check-certificate https://github.com/httpPrincess/metahosting-html/archive/master.tar.gz | tar zxf - && \
    ln -s metahosting-html-master/ /app && \
    pip install -r /app/requirements.txt && \
+   cd app && ./create_users.sh && cd / && 
    chown -R meta:meta /app/
 EXPOSE 5000
 VOLUME /app/myapp/data/
