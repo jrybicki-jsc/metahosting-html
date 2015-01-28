@@ -2,8 +2,8 @@ language: python
 python:
  - "2.7"
 #command to install deps:
-install: "pip install -r testing_requirements.txt"
+install: "pip install -r testing_requirements.txt && pip install git+https://github.com/httpPrincess/metahosting"
 #command to run tests:
 script: 
  - find . -name "*.py" -exec pep8 {} \;
- - nosetests --with-coverage --cover-package=myapp,user,facade,autho 
+ - nosetests --with-coverage --cover-package=myapp,user
