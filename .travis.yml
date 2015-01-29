@@ -11,4 +11,4 @@ install: "pip install -r testing_requirements.txt && pip install git+https://git
 #command to run tests:
 script: 
  - find . -name "*.py" -exec pep8 {} \;
- - nosetests --with-coverage --cover-package=myapp,user
+ - nosetests --with-coverage --cover-package=myapp,user,authen
