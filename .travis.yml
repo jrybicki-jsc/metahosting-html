@@ -1,6 +1,11 @@
 language: python
 python:
  - "2.7"
+before_script:
+ - sleep 15
+services:
+  - rabbitmq
+  - mongodb
 #command to install deps:
 install: "pip install -r testing_requirements.txt && pip install git+https://github.com/httpPrincess/metahosting"
 #command to run tests:
