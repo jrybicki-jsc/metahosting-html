@@ -1,3 +1,4 @@
+from facade import get_facade
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask.ext.login import LoginManager
@@ -18,5 +19,7 @@ Bootstrap(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+facade = get_facade()
 
 import myapp.views

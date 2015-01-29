@@ -1,7 +1,7 @@
 from authen import get_user_for_name, get_user_for_id
 from babel import dates
 from collections import OrderedDict
-from facade import facade
+from myapp import facade
 from flask.ext.login import login_required, login_user, logout_user
 from flask import render_template, abort, request, url_for, flash, \
     Markup, redirect
