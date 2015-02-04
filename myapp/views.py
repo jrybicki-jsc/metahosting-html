@@ -62,6 +62,15 @@ def one_instance(instance_id):
                            instance=instance)
 
 
+@app.route('/instances/<instance_id>/delete', methods=['POST'])
+@login_required
+def delete(instance_id):
+    if not facade.delete_instance(instance_id, uid=current_user.get_id()):
+        abort(404)
+    flash('Instance %s removed' % instance_id, 'info')
+    return render_template('index.html', types=facade.get_types())
+
+
 @app.route('/types/')
 def all_types():
     type_list = facade.get_types()
@@ -120,7 +129,7 @@ def user_loader(userid):
 # api_key = incoming_request.headers.get('API-KEY')
 # if api_key:
 # user = get_user_for_api_key(api_key)
-#         if user:
+# if user:
 #             return user
 #     return None
 
