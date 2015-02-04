@@ -10,14 +10,13 @@
     <h3>Create instance</h3>
         <form class="form-inline" role="form" action="" method="post">
             <div class="form-group">
-           <select  class="form-control" name="instance_type">
-        {% for type_name, type_description in types.iteritems() %}
-            <option value="{{ type_name }}">{{ type_name }} </option>
-        {% endfor %}
-        </select>
-            <input class="btn btn-primary" type="submit" value="create" name="create"/>
+               <select  class="form-control" name="instance_type">
+                {% for item in types|dictsort(false, 'key') %}
+                    <option value="{{ item[0] }}">{{ item[0] }} </option>
+                {% endfor %}
+                </select>
+                <input class="btn btn-primary" type="submit" value="create" name="create"/>
             </div>
-
         </form>
 {% else %}
       <h3>No instance type registered!</h3>

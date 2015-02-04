@@ -148,5 +148,7 @@ def page_not_found(error):
 
 
 def paginate_collection(collection, page, per_page):
-    instances = OrderedDict(collection)
+    instances = OrderedDict(sorted(collection.items(),
+                                   key=lambda t: t[1]['ts'],
+                                   reverse=True))
     return islice(instances.items(), (page - 1) * per_page, page * per_page)
