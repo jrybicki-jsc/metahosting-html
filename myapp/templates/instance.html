@@ -2,8 +2,11 @@
    <tr><td width="80px">Id</td>
        <td><a href="{{ url_for('one_instance', instance_id=id) }}">{{ id }}</a></td>
    </tr>
+   {% if instance['created'] %}
+   <tr><td>Created</td><td>{{ instance['created']|datetime }} </td></tr>
+   {% endif %}
    {% if instance['ts'] %}
-   <tr><td>Created</td><td>{{ instance['ts']|datetime }} </td></tr>
+   <tr><td>Last update</td><td>{{ instance['ts']|datetime }} </td></tr>
    {% endif %}
 
     <tr><td>Type</td>
