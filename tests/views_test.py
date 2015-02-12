@@ -99,7 +99,7 @@ class ViewsTest(unittest.TestCase):
 
         self.login(self.user_list['1'])
 
-        self.facade.get_all_instances = Mock(return_value=[])
+        self.facade.get_all_instances = Mock(return_value={})
         rv = self.app.get('/instances/')
         self.assertEquals(rv.status_code, 200)
         self.assertTrue('No instances' in rv.data)
