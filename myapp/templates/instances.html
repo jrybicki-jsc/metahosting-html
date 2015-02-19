@@ -10,6 +10,7 @@
 {% if instances %}
      <h3>List of instances</h3>
         {% for id, instance in instances %}
+          {% set skip_connection = True %}
           {% include 'instance.html' %}
         {% else %}
            <p>No instances</p>

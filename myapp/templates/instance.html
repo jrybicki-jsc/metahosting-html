@@ -1,24 +1,47 @@
+{% set skip_connection = skip_connection|default(False) %}
+
 <table class="table table-bordered table-condensed">
-   <tr><td width="100px">Id</td>
+    <tr>
+       <td width="100px">Id</td>
        <td><a href="{{ url_for('one_instance', instance_id=id) }}">{{ id }}</a></td>
-   </tr>
-   {% if instance['created'] %}
-   <tr><td>Created</td><td>{{ instance['created']|datetime }} </td></tr>
-   {% endif %}
-   {% if instance['ts'] %}
-   <tr><td>Last update</td><td>{{ instance['ts']|datetime }} </td></tr>
-   {% endif %}
+    </tr>
 
-    <tr><td>Type</td>
-       <td><a href="{{ url_for('one_type', name=instance['type']) }}">{{ instance['type'] }}</a>
+    <tr>
+        <td>Type</td>
+        <td><a href="{{ url_for('one_type', name=instance['type']) }}">{{ instance['type'] }}</a></td>
+   </tr>
+
+    {% if instance['created'] %}
+    <tr>
+       <td>Created</td>
+       <td>{{ instance['created']|datetime }} </td>
+    </tr>
+    {% endif %}
+
+    <tr {% if instance['status'].lower().find('failed')!=-1 %} class="danger" {% else %} class="info" {% endif %}>
+        <td>Status</td>
+        <td>{{ instance['status'] }}</td>
+    </tr>
+
+    {% if instance['ts'] %}
+    <tr>
+       <td>Last update</td>
+       <td>{{ instance['ts']|datetime }}</td>
+    </tr>
+    {% endif %}
+
+    {% if not skip_connection and instance['connection'] %}
+    <tr>
+       <td>Connection details</td>
+       <td>
+       {% for k,v in instance['connection'].iteritems() %}
+            {{v[0]['HostIp']}}:{{v[0]['HostPort'] }}&nbsp;({{ k }}) <br/>
+       {% endfor %}
        </td>
-   </tr>
+    </tr>
+    {% endif %}
 
-   <tr{% if instance['status'].lower().find('failed')!=-1 %} class="danger" {% else %} class="info" {% endif %}>
-    <td>Status</td>
-    <td>{{ instance['status'] }}</td>
-   </tr>
-   <tr>
+    <tr>
        <td>Actions</td>
        <td>
            <form action="{{ url_for('delete', instance_id=id) }}" method="post">
@@ -27,5 +50,5 @@
                 </button>
            </form>
        </td>
-   </tr>
+    </tr>
 </table>
