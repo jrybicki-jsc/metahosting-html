@@ -30,8 +30,10 @@ if 'HTTP_DEBUG' in os.environ:
     type_store = Store()
     authorizer = LocalAuthorizer()
 
-    from helpers import add_some_types
+    from helpers import add_some_types, add_some_instances, add_some_ownership
     add_some_types(type_store=type_store)
+    add_some_instances(instance_store=instance_store)
+    add_some_ownership(authorizer=authorizer)
 
     def send_method(routing_key, subject, message):
         print 'Incoming message: %s %s %s' % (routing_key, subject, message)
@@ -45,8 +47,7 @@ if 'HTTP_DEBUG' in os.environ:
     facade = Facade(authorization=authorizer,
                     type_store=type_store,
                     instance_store=instance_store,
-                    send_method=send_method
-                    )
+                    send_method=send_method)
 
 else:
     facade = get_facade()
