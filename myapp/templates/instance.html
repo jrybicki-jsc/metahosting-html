@@ -30,7 +30,9 @@
     </tr>
     {% endif %}
 
-    {% if not skip_connection and instance['connection'] %}
+    {% if not skip_connection %}
+
+    {% if instance['connection'] %}
     <tr>
        <td>Connection details</td>
        <td>
@@ -39,6 +41,20 @@
        {% endfor %}
        </td>
     </tr>
+    {% endif %}
+
+    {% if instance['environment'] %}
+    <tr>
+       <td>Environment</td>
+       <td>
+       {% for k in instance['environment'] %}
+            {{ k }} <br/>
+       {% endfor %}
+       </td>
+    </tr>
+    {% endif %}
+
+
     {% endif %}
 
     <tr>
