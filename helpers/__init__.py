@@ -1,5 +1,3 @@
-__author__ = 'jj'
-
 
 def add_some_ownership(authorizer):
     my_ownership = {

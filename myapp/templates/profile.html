@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %} Metahosting: User Profile {% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+      {% include 'flash.html' %}
+
+
+      <h3>Hello {{ user.get_name() }}!</h3>
+      <span>
+      Your API Key: {{ user['api_key'] }}
+      </span>
+
+  </div>
+</div>
+{% endblock %}

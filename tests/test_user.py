@@ -16,8 +16,15 @@ class UserTest(unittest.TestCase):
                      api_key=v['api_key'])
 
     def test_first(self):
-        print 'Testing first'
-        self.assertTrue(True)
+        values = {'name': 'foo', 'pass': 'bar', 'api_key': '8811',
+                  'level': 'hard'}
+        a = User(user_id=661, values=values)
+        self.assertEqual(a.get_id(), 661)
+        self.assertEqual(a.get_name(), 'foo')
+        self.assertEqual(a.get_api_key(), '8811')
+        self.assertTrue(a.validate_password('bar'))
+        self.assertFalse(a.validate_password('foo'))
+        self.assertEqual(a['level'], 'hard')
 
     def test_get_all_users(self):
         ll = get_all_users()

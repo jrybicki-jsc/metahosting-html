@@ -119,6 +119,12 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html', user=current_user)
+
+
 @login_manager.user_loader
 def user_loader(userid):
     return get_user_for_id(userid)

@@ -20,5 +20,8 @@ class User(dict):
     def get_name(self):
         return self.get('name')
 
+    def get_api_key(self):
+        return self.get('api_key')
+
     def validate_password(self, password):
         return self.get('pass') == password
