@@ -232,7 +232,7 @@ class ViewsTest(unittest.TestCase):
             assert_called_with('11', uid=self.instance_owner['id'])
 
         self.facade.delete_instance = Mock(return_value=True)
-        rv = self.app.post('/instances/11/delete')
+        rv = self.app.post('/instances/11/delete', follow_redirects=True)
         self.assertEqual(200, rv.status_code)
         self.facade.delete_instance.\
             assert_called_with('11', uid=self.instance_owner['id'])

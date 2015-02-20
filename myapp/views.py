@@ -68,7 +68,7 @@ def delete(instance_id):
     if not facade.delete_instance(instance_id, uid=current_user.get_id()):
         abort(404)
     flash('Instance %s removed' % instance_id, 'info')
-    return render_template('index.html', types=facade.get_types())
+    return redirect(url_for('index'))
 
 
 @app.route('/types/')
