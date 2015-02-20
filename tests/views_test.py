@@ -219,6 +219,36 @@ class ViewsTest(unittest.TestCase):
         self.assertTrue('created' in rv.data)
         self.logout()
 
+    def test_delete_instance(self):
+
+        rv = self.app.post('/instances/11/delete')
+        self.assertEquals(302, rv.status_code)
+
+        self.login(self.instance_owner)
+        self.facade.delete_instance = Mock(return_value=False)
+        rv = self.app.post('/instances/11/delete')
+        self.assertEqual(404, rv.status_code)
+        self.facade.delete_instance.\
+            assert_called_with('11', uid=self.instance_owner['id'])
+
+        self.facade.delete_instance = Mock(return_value=True)
+        rv = self.app.post('/instances/11/delete')
+        self.assertEqual(200, rv.status_code)
+        self.facade.delete_instance.\
+            assert_called_with('11', uid=self.instance_owner['id'])
+        self.assertTrue('Instance 11 removed' in rv.data)
+        self.logout()
+
+    def test_profile(self):
+        rv = self.app.get('/profile')
+        self.assertEqual(302, rv.status_code)
+
+        self.login(self.instance_owner)
+        rv = self.app.get('/profile')
+        self.assertEqual(200, rv.status_code)
+        self.assertTrue(self.instance_owner['name'] in rv.data)
+        self.logout()
+
     def test_index(self):
         rv = self.app.get('/')
         # expect log-in redirection
