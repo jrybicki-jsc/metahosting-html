@@ -1,7 +1,9 @@
+from tempfile import NamedTemporaryFile
+import json
 import unittest
 from authen import User, get_user_for_id, drop_all_users, add_user, \
     get_all_users, remove_user, get_user_for_name, \
-    get_user_for_api_key
+    get_user_for_api_key, load_from_file
 
 
 class UserTest(unittest.TestCase):
@@ -25,6 +27,17 @@ class UserTest(unittest.TestCase):
         self.assertTrue(a.validate_password('bar'))
         self.assertFalse(a.validate_password('foo'))
         self.assertEqual(a['level'], 'hard')
+
+    def test_read_from_file(self):
+        config_file = NamedTemporaryFile(mode='w', delete=False)
+        user_list = {'1': {'name': 'foo', 'pass': 'bar', 'api_key': '555'},
+                     '2': {'name': 'alo', 'pass': 'fffa', 'api_key': '666'}}
+        json.dump(user_list, config_file)
+        config_file.close()
+        users = load_from_file(file_name=config_file.name)
+        self.assertTrue(len(users), len(user_list))
+
+        config_file.unlink(config_file.name)
 
     def test_get_all_users(self):
         ll = get_all_users()
@@ -56,7 +69,12 @@ class UserTest(unittest.TestCase):
 
         result = add_user(111, name='Bob', password='Dylan', api_key='006612')
         self.assertTrue(result)
-        self.assertEqual(len(get_all_users()), count+1)
+        self.assertEqual(len(get_all_users()), count + 1)
+
+        result = add_user(111, name='Bobby', password='Dylanie',
+                          api_key='0066121')
+        self.assertFalse(result)
+        self.assertEqual(len(get_all_users()), count + 1)
 
         r2 = get_user_for_id(111)
         self.assertIsNotNone(r2)
@@ -84,7 +102,7 @@ class UserTest(unittest.TestCase):
         count = len(get_all_users())
         result = add_user(111, name='Bob', password='Dylan', api_key='006612')
         self.assertTrue(result)
-        self.assertEqual(len(get_all_users()), count+1)
+        self.assertEqual(len(get_all_users()), count + 1)
 
         result = remove_user(222)
         self.assertFalse(result)

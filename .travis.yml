@@ -12,3 +12,4 @@ install: "pip install -r testing_requirements.txt && pip install git+https://git
 script: 
  - find . -name "*.py" -exec pep8 {} \;
  - nosetests --with-coverage --cover-package=myapp,user,authen
+ - HTTP_DEBUG=1 nosetests --with-coverage --cover-package=myapp,user,authen
