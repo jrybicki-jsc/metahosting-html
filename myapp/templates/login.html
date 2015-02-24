@@ -15,7 +15,7 @@
                     </div>
                     {% if form.username.errors %}
                     {% for error in form.username.errors %}
-                    <p>
+                    <p class="text-danger">
                     {{ error }}
                     </p>
                     {% endfor %}
@@ -29,7 +29,7 @@
                     </div>
                     {% if form.password.errors %}
                     {% for error in form.password.errors %}
-                    <p>
+                    <p class="text-danger">
                     {{ error }}
                     </p>
                     {% endfor %}
