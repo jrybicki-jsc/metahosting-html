@@ -1,42 +1,46 @@
-
 {% extends "layout.html" %}
-
 {% block title %} Metahosting: Login {% endblock %}
-
 {% block content %}
 <div class="container">
   <div class="jumbotron">
       {% include 'flash.html' %}
-
-  <div class="well">
-        <form class="form-signin" method="post">
+      <div class="well">
             <h2 class="form-signin-heading">Please login</h2>
-            {{ form.hidden_tag() }}
-            <div class="control-group">
-                {% for error in form.username.errors %}
-                {{ error }}
-                {% endfor %}
-                <label for="username" class="control-label">Username</label>
-                <div class="controls">
-                    {{ form.username(maxlength=20, class="span4", id="username", placeholder="username") }}
+            <form class="form-horizontal" method="post">
+                {{ form.hidden_tag() }}
+                <div class="form-group {% if form.username.errors %} has-error {% endif %}">
+                    <label class="col-sm-2 control-label" for="username">Username</label>
+                    <div class="col-sm-4">
+                        {{ form.username(maxlength=22, class="form-control", id="username", placeholder="username") }}
+                    </div>
+                    {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                    <p>
+                    {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                    </span>
                 </div>
-            </div>
-            <div class="control-group">
-                {% for error in form.password.errors %}
-                {{ error }}
-                {% endfor %}
-                <label for="password" class="control-label">Password</label>
-                <div class="controls">
-                    {{ form.password(maxlength=20, class="span4", placeholder="password", id="password") }}
+                <div class="form-group {% if form.password.errors %} has-error {% endif %}">
+                    <label class="col-sm-2 control-label" for="password">Password</label>
+                    <div class="col-sm-4">
+                        {{ form.password(maxlength=20, class="form-control", placeholder="password", id="password") }}
+                    </div>
+                    {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                    <p>
+                    {{ error }}
+                    </p>
+                    {% endfor %}
+                    {% endif %}
                 </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button class="btn btn-sm btn-primary" type="submit">Sign in</button>
+                <div class="form-group">
+                    <span class="col-sm-2"></span>
+                    <button class=" col-sm-2 btn btn-sm btn-primary" type="submit">Sign in</button>
                 </div>
-            </div>
-        </form>
-  </div>
+            </form>
+      </div>
   </div>
 </div>
 {% endblock %}
