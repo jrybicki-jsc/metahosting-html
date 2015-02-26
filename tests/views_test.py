@@ -71,7 +71,7 @@ class ViewsTest(unittest.TestCase):
             self.assertTrue('Logged in successfully' in rv.data)
             rv = self.logout()
             self.assertEquals(rv.status_code, 200)
-            self.assertTrue('Logged out' in rv.data)
+            self.assertTrue('Please log in to access this page' in rv.data)
 
         for uid, user in self.user_list.iteritems():
             rv = self.login({'name': user['name'], 'password': 'wrong'})
