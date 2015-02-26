@@ -13,6 +13,7 @@ def load_from_file(file_name=USERS_FILE):
         return None
     return users
 
+
 __backend__ = dict()
 a = load_from_file()
 if a:
@@ -67,6 +68,10 @@ def add_user(uid, name, password, api_key):
 
 def get_user_for_name(name):
     return _get_user_for_property('name', name)
+
+
+def validate_password(user_entity, password):
+    return user_entity.validate_password(password)
 
 
 def get_user_for_api_key(api_key):

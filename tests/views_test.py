@@ -78,7 +78,7 @@ class ViewsTest(unittest.TestCase):
             self.assertTrue('Unable to validate password' in rv.data)
 
         rv = self.login(self.non_existing_user)
-        self.assertTrue('Unable to validate password' in rv.data)
+        self.assertTrue('Unknown user' in rv.data)
 
         rv = self.login({'name': self.instance_owner['name'], 'password': ''})
         self.assertTrue('This field is required' in rv.data)

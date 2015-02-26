@@ -1,13 +1,12 @@
-from authen import get_user_for_name, get_user_for_id
+from authen import get_user_for_id
 from babel import dates
 from collections import OrderedDict
-from myapp import facade
 from flask.ext.login import login_required, login_user, logout_user
 from flask import render_template, abort, request, url_for, flash, \
     Markup, redirect
 from flask_login import current_user
 from itertools import islice
-from myapp import app, login_manager
+from myapp import app, login_manager, facade
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
 from pytz import timezone
@@ -101,13 +100,9 @@ def help_page(subject='General'):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = get_user_for_name(form.username.data)
-        if user and user.validate_password(form.password.data):
-            login_user(user)
-            flash('Logged in successfully.', 'info')
-            return redirect(request.args.get('next') or url_for('index'))
-        else:
-            flash('Unable to validate password', 'warning')
+        login_user(form.user)
+        flash('Logged in successfully.', 'info')
+        return redirect(request.args.get('next') or url_for('index'))
     return render_template('login.html', form=form)
 
 
