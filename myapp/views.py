@@ -143,7 +143,7 @@ def format_datetime(value):
 
 @app.errorhandler(404)
 def page_not_found(error):
-    app.logger.debug('Error %r' % error)
+    app.logger.debug('Error %r', error)
     return render_template('404.html'), 404
 
 
