@@ -260,6 +260,10 @@ class ViewsTest(unittest.TestCase):
         self.assertEquals(200, rv.status_code)
         res = self.logout()
 
+    def test_health(self):
+        rv = self.app.get('/healthcheck/')
+        self.assertEqual(rv.status_code, 200)
+
     def login(self, user):
         return self.app.post('/login',
                              data={'username': user['name'],

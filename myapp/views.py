@@ -119,6 +119,11 @@ def profile():
     return render_template('profile.html', user=current_user)
 
 
+@app.route('/healthcheck/')
+def health_check():
+    return 'Up and running', 200
+
+
 @login_manager.user_loader
 def user_loader(userid):
     return get_user_for_id(userid)
