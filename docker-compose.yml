@@ -12,7 +12,7 @@ autho:
   ports:
    - "5000:5000"
 updater:
-  image: httpprincess/store-updater:master
+  image: httpprincess/store-updater:latest
 #  image: updater2
   links:
     - db
