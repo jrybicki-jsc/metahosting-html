@@ -17,12 +17,24 @@ updater:
   links:
     - db
     - messaging
-worker:
+worker1:
   image: benedicere/metahosting-dummyworker
   links:
     - db
     - messaging
-  command: /app/run.py
+  environment:
+    - DB_LOCAL_COLLECTION=dummy1-local-instances
+    - WORKER_NAME=dummy1
+    - WORKER_DESCRIPTION=dummyworker 1
+worker2:
+  image: benedicere/metahosting-dummyworker
+  links:
+    - db
+    - messaging
+  environment:
+    - DB_LOCAL_COLLECTION=dummy2-local-instances
+    - WORKER_NAME=dummy2
+    - WORKER_DESCRIPTION=dummyworker 2
 facade:
    build: .
    command: /app/run.py
