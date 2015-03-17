@@ -52,7 +52,7 @@ def all_instances():
 if TESTING:
     @app.route('/headers/')
     @login_required
-    def all_instances():
+    def print_headers():
         return render_template('headers.html', headers=request.headers)
 
 
