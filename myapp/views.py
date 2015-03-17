@@ -1,4 +1,4 @@
-from authen import get_user_for_id
+from authen import get_user_for_id, get_user_for_eppn
 from babel import dates
 from collections import OrderedDict
 from flask.ext.login import login_required, login_user, logout_user
@@ -129,14 +129,14 @@ def user_loader(userid):
     return get_user_for_id(userid)
 
 
-# @login_manager.request_loader
-# def load_user_from_request(incoming_request):
-# api_key = incoming_request.headers.get('API-KEY')
-# if api_key:
-# user = get_user_for_api_key(api_key)
-# if user:
-#             return user
-#     return None
+@login_manager.request_loader
+def load_user_from_request(incoming_request):
+    api_key = incoming_request.headers.get('eppn')
+    if api_key:
+        user = get_user_for_eppn(api_key)
+        if user:
+            return user
+    return None
 
 
 @app.template_filter('datetime')
