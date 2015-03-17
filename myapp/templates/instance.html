@@ -5,33 +5,33 @@
        <td width="100px">Id</td>
        <td><a href="{{ url_for('one_instance', instance_id=id) }}">{{ id }}</a></td>
     </tr>
-
     <tr>
         <td>Type</td>
         <td><a href="{{ url_for('one_type', name=instance['type']) }}">{{ instance['type'] }}</a></td>
-   </tr>
-
+    </tr>
     {% if instance['created'] %}
     <tr>
        <td>Created</td>
        <td>{{ instance['created']|datetime }} </td>
     </tr>
     {% endif %}
-
-    <tr {% if instance['status'].lower().find('failed')!=-1 %} class="danger" {% else %} class="info" {% endif %}>
+   <tr {% if instance['status'].lower().find('failed')!=-1 %} class="danger" {% else %} class="info" {% endif %}>
         <td>Status</td>
         <td>{{ instance['status'] }}</td>
     </tr>
-
     {% if instance['ts'] %}
     <tr>
        <td>Last update</td>
        <td>{{ instance['ts']|datetime }}</td>
     </tr>
     {% endif %}
-
     {% if not skip_connection %}
-
+    {% if instance['url'] %}
+    <tr>
+       <td>URL</td>
+       <td><a href="{{ instance['url'] }}" target="_blank">{{ instance['url'] }}</a></td>
+    </tr>
+    {% endif %}
     {% if instance['connection'] %}
     <tr>
        <td>Connection details</td>
@@ -42,7 +42,6 @@
        </td>
     </tr>
     {% endif %}
-
     {% if instance['environment'] %}
     <tr>
        <td>Environment</td>
@@ -62,7 +61,7 @@
        <td>
            <form action="{{ url_for('delete', instance_id=id) }}" method="post">
                 <button type="submit" class="btn btn-default btn-xs">
-                     <span style="color:red"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></span> Remove
+                     <span style="color:red"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></span> Remove
                 </button>
            </form>
        </td>
