@@ -1,4 +1,4 @@
-from authen import get_user_for_id
+from authen import get_user_for_id, get_user_for_eppn
 from babel import dates
 from collections import OrderedDict
 from flask.ext.login import login_required, login_user, logout_user
@@ -13,6 +13,7 @@ from pytz import timezone
 
 PER_PAGE = 5
 
+TESTING = True
 
 @app.route('/')
 @login_required
@@ -47,6 +48,12 @@ def all_instances():
     pagination = Pagination(page, PER_PAGE, count)
     return render_template('instances.html', instances=instances,
                            pagination=pagination)
+
+if TESTING:
+    @app.route('/headers/')
+    @login_required
+    def print_headers():
+        return render_template('headers.html', headers=request.headers)
 
 
 @app.route('/instances/<instance_id>')
@@ -129,14 +136,14 @@ def user_loader(userid):
     return get_user_for_id(userid)
 
 
-# @login_manager.request_loader
-# def load_user_from_request(incoming_request):
-# api_key = incoming_request.headers.get('API-KEY')
-# if api_key:
-# user = get_user_for_api_key(api_key)
-# if user:
-#             return user
-#     return None
+@login_manager.request_loader
+def load_user_from_request(incoming_request):
+    api_key = incoming_request.headers.get('eppn')
+    if api_key:
+        user = get_user_for_eppn(api_key)
+        if user:
+            return user
+    return None
 
 
 @app.template_filter('datetime')

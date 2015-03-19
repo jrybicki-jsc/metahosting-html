@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% set active_page = "headers" %}
+{% block title %} Metahosting: Headers {% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <div class="jumbotron">
+
+{% if headers.iteritems %}
+     <h3>List of headers</h3>
+        {% for header_key, header_value in headers.iteritems() %}
+          <table class="table table-bordered table-condensed">
+            <tr>
+                <td width="80px">Name</td>
+                <td>{{ header_key }} </td>
+            </tr>
+            <tr>
+                <td width="80px">Description</td>
+                <td>{{ header_value }} </td>
+            </tr>
+        </table>
+        {% endfor %}
+
+{% endif %}
+  </div>
+</div>
+{% endblock %}
