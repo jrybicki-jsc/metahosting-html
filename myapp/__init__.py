@@ -6,6 +6,7 @@ from flask.ext.login import LoginManager
 from logging import StreamHandler, DEBUG
 import sys
 
+
 class ReverseProxied(object):
     """
     Follow instructions at http://flask.pocoo.org/snippets/35/

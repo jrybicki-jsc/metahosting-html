@@ -54,7 +54,7 @@ def add_some_instances(instance_store):
                 u'7473/tcp': [{u'HostIp': u'0.0.0.0', u'HostPort': u'49153'}],
                 u'7474/tcp': [{u'HostIp': u'0.0.0.0', u'HostPort': u'49154'}]
             },
-            u'url': u'http://0.0.0.0:49154/',
+            u'urls': [u'http://0.0.0.0:49154/', 'https://0.0.0.0:49153/'],
             u'id': u'666',
             u'last_info': 1416398801.156127,
             u'status': u'running',
@@ -77,7 +77,7 @@ def add_some_instances(instance_store):
             u'environment': [
                 u'EXIST_MEMORY=1024',
                 u'EXIST_ADMIN_PASSWORD=KvmWaEq4sdMSUGio'],
-            u'url': u'http://0.0.0.0:49155/exist/',
+            u'urls': [u'http://0.0.0.0:49155/exist/'],
             u'created': 1424349681.114382,
             u'id': u'9b4ad79cb83411e4adbfd63e388e3f27',
             u'last_info': 1424349870.699567,
