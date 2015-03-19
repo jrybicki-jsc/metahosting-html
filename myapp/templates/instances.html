@@ -16,7 +16,7 @@
            <p>No instances</p>
         {% endfor %}
 
-
+    {% if pagination.has_prev or pagination.has_next %}
      <ul class="pager">
         {% if pagination.has_prev %}
            <li class="previous"><a href="{{ url_for('all_instances', page = pagination.page-1) }}">&larr; Newer instances</a></li>
@@ -30,6 +30,7 @@
             <li class="next disabled"><a href="#" onclick="return false;">Older instances &rarr;</a></li>
         {% endif %}
      </ul>
+     {% endif %}
 
 
 {% endif %}
