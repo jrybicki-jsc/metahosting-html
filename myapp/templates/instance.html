@@ -26,10 +26,14 @@
     </tr>
     {% endif %}
     {% if not skip_connection %}
-    {% if instance['url'] %}
+    {% if instance['urls'] and instance['urls']|length > 0 %}
     <tr>
        <td>URL</td>
-       <td><a href="{{ instance['url'] }}" target="_blank">{{ instance['url'] }}</a></td>
+       <td>
+          {% for service_url in instance['urls'] %}
+             <a href="{{ service_url }}" target="_blank">{{ service_url }}</a><br/>
+          {% endfor %}
+       </td>
     </tr>
     {% endif %}
     {% if instance['connection'] %}
