@@ -31,7 +31,10 @@ def add_some_types(type_store):
                    u'ts': 1416487325.564435,
                    u'environment': {u'EXIST_MEMORY': u'1024',
                                     u'EXIST_ADMIN_PASSWORD': u''},
-                   u'available': True}
+                   u'available': True},
+        u'NoNeXist': {u'name': u'eXist',
+                      u'ts': 1416487325.564435}
+
     }
     for name, desc in my_list.iteritems():
         type_store.update(name, desc)

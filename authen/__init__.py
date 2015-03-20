@@ -81,4 +81,3 @@ def get_user_for_api_key(api_key):
 def get_user_for_eppn(api_key):
     tmp_dict = {'name': api_key, 'pass': None, 'api_key': api_key}
     return User(user_id=api_key, values=tmp_dict)
-

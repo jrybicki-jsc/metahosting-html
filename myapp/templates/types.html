@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td width="80px">Description</td>
-                <td>{{ type_description['description'] }} </td>
+                <td>{{ type_description['description'] or 'No description available' }} </td>
             </tr>
         </table>
         {% endfor %}
