@@ -51,6 +51,7 @@ class ViewsTest(unittest.TestCase):
         myapp.views.facade = self.facade
         self.facade.get_all_instances = Mock(return_value={})
         self.facade.get_types = Mock(return_value=self.types)
+        self.facade.get_active_types = Mock(return_value=self.types)
         # .get_all_instances
         self.app = app.test_client()
 
@@ -221,7 +222,6 @@ class ViewsTest(unittest.TestCase):
         self.logout()
 
     def test_delete_instance(self):
-
         rv = self.app.post('/instances/11/delete')
         self.assertEquals(302, rv.status_code)
 
