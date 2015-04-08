@@ -14,11 +14,17 @@ from pytz import timezone
 PER_PAGE = 5
 
 TESTING = True
+if TESTING:
+    @app.route('/headers/')
+    @login_required
+    def print_headers():
+        return render_template('headers.html', headers=request.headers)
+
 
 @app.route('/')
 @login_required
 def index():
-    type_list = facade.get_types()
+    type_list = facade.get_active_types()
     return render_template('index.html', types=type_list)
 
 
@@ -48,12 +54,6 @@ def all_instances():
     pagination = Pagination(page, PER_PAGE, count)
     return render_template('instances.html', instances=instances,
                            pagination=pagination)
-
-if TESTING:
-    @app.route('/headers/')
-    @login_required
-    def print_headers():
-        return render_template('headers.html', headers=request.headers)
 
 
 @app.route('/instances/<instance_id>')
