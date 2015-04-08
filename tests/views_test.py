@@ -1,13 +1,14 @@
 import unittest
 from myapp import app, myapp
 from authen import add_user, drop_all_users
-from facade.facade import Facade
+from facade.facade import Facade, generate_id
 from time import time
 from mock import Mock
 
 
 class ViewsTest(unittest.TestCase):
     def setUp(self):
+
         self.tearDown()
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
@@ -55,7 +56,7 @@ class ViewsTest(unittest.TestCase):
 
     def prepare_instance(self, status, instance_type):
         instance = dict()
-        instance['id'] = Facade._generate_id()
+        instance['id'] = generate_id()
         instance['status'] = status
         instance['type'] = instance_type
         instance['ts'] = time()

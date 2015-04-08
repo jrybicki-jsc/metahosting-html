@@ -52,7 +52,7 @@ login_manager.login_message_category = 'warning'
 if 'HTTP_DEBUG' in os.environ:
     from facade.facade import Facade
     from helpers.LocalAutho import LocalAuthorizer
-    from stores.dict_store import Store
+    from helpers.DictStore import Store
 
     instance_store = Store()
     type_store = Store()
