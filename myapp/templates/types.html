@@ -19,11 +19,13 @@
                 <td width="80px">Description</td>
                 <td>{{ type_description['description']|e or 'No description available' }} </td>
             </tr>
-            <tr>
+            {% if type_description.available is not none %}
+            <tr {% if type_description.available == false %} class="danger" {% else %} class="info" {% endif %}>
                 <td width="80px">Status</td>
-                <td>{{ type_description['status'] }} </td>
+                <td>{{ type_description.status|e or type_description.available }} </td>
             </tr>
-        </table>
+            {% endif %}
+          </table>
         {% endfor %}
 {% endif %}
   </div>
