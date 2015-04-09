@@ -1,13 +1,14 @@
 import unittest
 from myapp import app, myapp
 from authen import add_user, drop_all_users
-from facade.facade import Facade
+from facade.facade import Facade, generate_id
 from time import time
 from mock import Mock
 
 
 class ViewsTest(unittest.TestCase):
     def setUp(self):
+
         self.tearDown()
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
@@ -50,12 +51,13 @@ class ViewsTest(unittest.TestCase):
         myapp.views.facade = self.facade
         self.facade.get_all_instances = Mock(return_value={})
         self.facade.get_types = Mock(return_value=self.types)
+        self.facade.get_active_types = Mock(return_value=self.types)
         # .get_all_instances
         self.app = app.test_client()
 
     def prepare_instance(self, status, instance_type):
         instance = dict()
-        instance['id'] = Facade._generate_id()
+        instance['id'] = generate_id()
         instance['status'] = status
         instance['type'] = instance_type
         instance['ts'] = time()
@@ -220,7 +222,6 @@ class ViewsTest(unittest.TestCase):
         self.logout()
 
     def test_delete_instance(self):
-
         rv = self.app.post('/instances/11/delete')
         self.assertEquals(302, rv.status_code)
 

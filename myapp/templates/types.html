@@ -13,12 +13,11 @@
           <table class="table table-bordered table-condensed">
             <tr>
                 <td width="80px">Name</td>
-                <td><a
-                        href="{{ url_for('one_type', name=type_name) }}">{{ type_name }}</a></td>
+                <td><a href="{{ url_for('one_type', name=type_name) }}">{{ type_name|e }}</a></td>
             </tr>
             <tr>
                 <td width="80px">Description</td>
-                <td>{{ type_description['description'] }} </td>
+                <td>{{ type_description['description']|e or 'No description available' }} </td>
             </tr>
             <tr>
                 <td width="80px">Status</td>
