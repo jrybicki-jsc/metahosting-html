@@ -3,8 +3,9 @@
 {% block content %}
 <div class="container">
   <div class="jumbotron">
+  <h3><span class="label label-warning">Warning - this service is still in development! Instances are for testing only. </span><h3>
       {% include 'flash.html' %}
-{% if types.iteritems %}
+{% if types %}
     <h3>Create instance</h3>
         <form class="form-inline" role="form" action="" method="post">
             <div class="form-group">
