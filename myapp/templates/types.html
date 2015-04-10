@@ -22,7 +22,15 @@
             {% if type_description.available is not none %}
             <tr {% if type_description.available == false %} class="danger" {% else %} class="info" {% endif %}>
                 <td width="80px">Status</td>
-                <td>{{ type_description.status|e or type_description.available }} </td>
+                <td>
+                    {% if type_description.status%}
+                        {{ type_description.status|e }}
+                    {% elif type_description.available == true %}
+                        Worker available
+                    {% else  %}
+                        Worker unavailable
+                    {% endif %}
+                </td>
             </tr>
             {% endif %}
           </table>
