@@ -10,6 +10,7 @@ from myapp import app, login_manager, facade
 from myapp.forms import LoginForm
 from myapp.paginator import Pagination
 from pytz import timezone
+from urlparse import urlparse, urljoin
 
 PER_PAGE = 5
 
@@ -109,6 +110,9 @@ def login():
     if form.validate_on_submit():
         login_user(form.user)
         flash('Logged in successfully.', 'info')
+        next = flask.request.args.get('next')
+        if not is_safe_url(next):
+            return flask.abort(400)
         return redirect(request.args.get('next') or url_for('index'))
     return render_template('login.html', form=form)
 
@@ -164,3 +168,10 @@ def paginate_collection(collection, page, per_page):
                                    key=lambda t: t[1]['ts'],
                                    reverse=True))
     return islice(instances.items(), (page - 1) * per_page, page * per_page)
+
+
+def is_safe_url(target):
+    ref_url = urlparse(request.host_url)
+    test_url = urlparse(urljoin(request.host_url, target))
+    return test_url.scheme in ('http', 'https') and \
+        ref_url.netloc == test_url.netloc
