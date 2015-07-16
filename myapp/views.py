@@ -110,10 +110,10 @@ def login():
     if form.validate_on_submit():
         login_user(form.user)
         flash('Logged in successfully.', 'info')
-        next = flask.request.args.get('next')
+        next = request.args.get('next')
         if not is_safe_url(next):
-            return flask.abort(400)
-        return redirect(request.args.get('next') or url_for('index'))
+            return abort(400)
+        return redirect(next or url_for('index'))
     return render_template('login.html', form=form)
 
 
